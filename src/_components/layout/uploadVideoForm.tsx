@@ -1,0 +1,143 @@
+// src/components/layout/UploadVideoForm.tsx
+import { useState } from 'react';
+import styled from 'styled-components';
+import { borderRadius, colors } from '@_constants/index';
+
+import { createVideo, getSingleVideo } from '@_services/videosService';
+import { validateUserId, validateStringNotEmpty, validateUrl } from '@_validators/index';
+import { useUser } from '@_context/index';
+
+// Styles
+const UploadFormContainer = styled.div`
+  position: absolute;
+  right: 10%;
+  background-color: ${colors.primarys0l25};
+  padding: 10px 20px;
+  border-radius: ${borderRadius}px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+`;
+
+const Header = styled.form`
+  display:flex;
+  justify-content: center;
+  margin: 0 5px 5px 5px;
+  font-size:  1.2rem;
+  font-weight: 550;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  margin-bottom: 10px;
+  padding: 8px;
+  background-color: transparent;
+  color: ${colors.white};
+  border: 1px solid ${colors.primarys0l15};
+  border-radius: ${borderRadius}px;
+
+  &::placeholder {
+    color: ${colors.white};
+    opacity: 0.7;
+  }
+`;
+
+const SubmitButton = styled.button`
+  background-color: ${colors.primarys0l15};
+  color: ${colors.white};
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: ${borderRadius}px;
+
+  &:hover {
+    background-color: ${colors.primarys0l25};
+  }
+`;
+
+const ErrorText = styled.div`
+  color: ${colors.red};
+`;
+
+interface UploadVideoFormProps {
+  onClose: () => void;
+}
+
+export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => {
+  const { username } = useUser();
+
+  const [user_id, setUserId] = useState('');
+  const [video_url, setVideoUrl] = useState('');
+  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
+  const [error, setError] = useState('');
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateUserId(user_id)) {
+      setError('Invalid user ID. Must be snake_case lowercase.');
+      return;
+    }
+    if (!validateUrl(video_url)) {
+      setError('Invalid video URL.');
+      return;
+    }
+    if (!validateStringNotEmpty(title)) {
+      setError('Title must not be empty.');
+      return;
+    }
+    if (!validateStringNotEmpty(description)) {
+      setError('Description must not be empty.');
+      return;
+    }
+    try {
+      await createVideo({ user_id, description, video_url, title });
+      console.log('Video created successfully:');
+      if (username === user_id) {
+        const svideo = await getSingleVideo(video_url)
+        //fix Later add to list singleVideo
+      }
+      onClose();
+    } catch (error) {
+      console.error('Failed to create video:', error);
+    }
+  };
+
+  return (
+    <UploadFormContainer>
+      <Header>Upload Video</Header>
+      <Form onSubmit={handleSubmit}>
+        <Input
+          type="text"
+          placeholder="User ID"
+          value={user_id}
+          onChange={(e) => setUserId(e.target.value)}
+        />
+        <Input
+          type="text"
+          placeholder="Video URL"
+          value={video_url}
+          onChange={(e) => setVideoUrl(e.target.value)}
+        />
+        <Input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <Input
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <SubmitButton type="submit">Upload</SubmitButton>
+        {error && <ErrorText>{error}</ErrorText>}
+      </Form>
+    </UploadFormContainer>
+  );
+};

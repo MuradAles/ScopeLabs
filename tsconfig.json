@@ -1,0 +1,63 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@_assets/*": [
+        "src/_assets/*"
+      ],
+      "@_components/*": [
+        "src/_components/*"
+      ],
+      "@_context/*": [
+        "src/_context/*"
+      ],
+      "@_constants/*": [
+        "src/_constants/*"
+      ],
+      "@_interfaces/*": [
+        "src/_interfaces/*"
+      ],
+      "@_utilities/*": [
+        "src/_utilities/*"
+      ],
+      "@_scenes/*": [
+        "src/_scenes/*"
+      ],
+      "@_services/*": [
+        "src/_services/*"
+      ],
+      "@_validators/*": [
+        "src/_validators/*"
+      ],
+    },
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
