@@ -1,11 +1,11 @@
 // src/components/layout/UploadVideoForm.tsx
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors } from '@_constants/index';
 
-import { createVideo, getSingleVideo } from '@_services/videosService';
+import { createVideo } from '@_services/videosService';
 import { validateUserId, validateStringNotEmpty, validateUrl } from '@_validators/index';
-import { useUser } from '@_context/index';
+import { appContext } from '@_context/context';
 
 // Styles
 const UploadFormContainer = styled.div`
@@ -67,9 +67,9 @@ interface UploadVideoFormProps {
 }
 
 export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => {
-  const { username } = useUser();
+  const { user } = useContext(appContext);
 
-  const [user_id, setUserId] = useState('');
+  const [user_id, setUserId] = useState(user.user_id);
   const [video_url, setVideoUrl] = useState('');
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
@@ -97,10 +97,6 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
     try {
       await createVideo({ user_id, description, video_url, title });
       console.log('Video created successfully:');
-      if (username === user_id) {
-        const svideo = await getSingleVideo(video_url)
-        //fix Later add to list singleVideo
-      }
       onClose();
     } catch (error) {
       console.error('Failed to create video:', error);
@@ -120,19 +116,16 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
         <Input
           type="text"
           placeholder="Video URL"
-          value={video_url}
           onChange={(e) => setVideoUrl(e.target.value)}
         />
         <Input
           type="text"
           placeholder="Title"
-          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <Input
           type="text"
           placeholder="Description"
-          value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
         <SubmitButton type="submit">Upload</SubmitButton>

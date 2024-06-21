@@ -1,16 +1,13 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Layout } from '@_components/layout';
-
-import { getUserVideos } from '@_services/index';
-import { getVideoThumbnail } from '@_services/index';
 
 import { VideoParams } from '@_interfaces/index';
 
 import { formatDateDistance } from '@_utilities/index'
 import { borderRadius } from '@_constants/styleConstants';
-import { useUser } from '@_context/index';
 import { VideoDetails } from '@_scenes/index';
+import { appContext } from '@_context/context';
 
 const Videos = styled.div`
   display: grid;
@@ -49,30 +46,9 @@ const VideoCreatedDate = styled.div``;
 const Text = styled.div``;
 
 export const Home = () => {
-  const { username, videos, setVideos } = useUser();
-  const [loading, setLoading] = useState(true);
+  const { videos } = useContext(appContext);
+  const [loading, setLoading] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<VideoParams | null>(null);
-
-  useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const response = await getUserVideos(username);
-        const videosWithThumbnails = await Promise.all(
-          response.map(async (video: VideoParams) => {
-            const thumbnailUrl = await getVideoThumbnail(video.video_url);
-            return { ...video, thumbnail_url: thumbnailUrl };
-          })
-        );
-        setVideos(videosWithThumbnails);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching videos:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchVideos();
-  }, [username, setVideos]);
 
   const openVideoDetails = (video: VideoParams) => {
     setSelectedVideo(video);

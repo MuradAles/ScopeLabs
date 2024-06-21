@@ -1,13 +1,13 @@
-import { useRef, useState, ReactNode } from 'react';
+import { useRef, useState, ReactNode, useContext } from 'react';
 import styled from 'styled-components';
 import { useClickAway } from 'react-use';
 import { borderRadius, colors } from '@_constants/index';
 import { Link } from 'react-router-dom';
 
 import { SearchIcon } from '@_assets/icons/search';
+import { appContext } from '@_context/index';
 import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
 import { UploadVideoForm } from './uploadVideoForm';
-import { useUser } from '@_context/index';
 
 const StyleHeader = styled.div`
   position: sticky;
@@ -102,7 +102,7 @@ const Footer = styled.div``;
 
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const { username, setUsername } = useUser();
+  const { user, setUser } = useContext(appContext);
   const [localUsername, setLocalUsername] = useState('');
   const [showUploadForm, setShowUploadForm] = useState(false);
   const ref = useRef(null);
@@ -112,11 +112,11 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setUsername(localUsername);
+    setUser({ user_id: localUsername });
   };
 
   const handleLogoClick = () => {
-    setUsername('john_smith');
+    setUser({ user_id: 'john_smith' });
     setLocalUsername('');
   };
 
@@ -146,7 +146,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </UploadVideo>
       </StyleHeader>
       <CurrentUsername>
-        You watching {username}
+        You watching {user.user_id}
       </CurrentUsername>
       <MainContent>
         {children}

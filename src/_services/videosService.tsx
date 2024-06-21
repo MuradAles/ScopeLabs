@@ -45,7 +45,6 @@ export const getUserVideos = async (user_id: string) => {
       throw new Error(`Failed to get videos: ${response.statusText}`);
     }
     const GetUserVideos = await response.json();
-    console.log(GetUserVideos);
     console.log('Videos loaded successfully');
     return GetUserVideos.videos;
   } catch (error) {
