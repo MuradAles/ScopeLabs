@@ -18,7 +18,7 @@ export const Title = styled.span`
 
 export const Text = styled.span`
   color: ${colors.text};
-    word-break: break-word;
+  word-break: break-word;
 `;
 
 export const ErrorText = styled.div`

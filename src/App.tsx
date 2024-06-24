@@ -88,7 +88,6 @@ export const App = () => {
     }
   }, [fetchComments, isCommentCreated])
 
-
   return (
     <appContext.Provider value={{
       user,

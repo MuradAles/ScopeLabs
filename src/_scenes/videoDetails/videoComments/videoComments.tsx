@@ -11,13 +11,7 @@ import { Input, Button, Title, Text, ErrorText } from '@_components/index';
 const Comments = styled.div`
   display:flex;
   flex-direction: column;
-  margin-top: 6px;
   width:100%;
-`;
-
-const Comment = styled.div`
-  display:flex;
-  flex-direction:column;
 `;
 
 const CreateComment = styled.form`
@@ -25,7 +19,23 @@ const CreateComment = styled.form`
   flex-direction: column;
   background-color:${colors.primarys0l15};
   border-radius: ${borderRadius}px;
+  padding: 6px;
+  gap: 6px;
 `;
+
+const Comment = styled.div`
+  display:flex;
+  flex-direction:column;
+  background-color: ${colors.primarys0l15};
+  padding: 6px;
+  margin-top: 8px;
+  border-radius: ${borderRadius}px;
+`;
+
+const CommentHeader = styled.div`
+  display: flex;
+  gap: 10px;
+  `;
 
 export const VideoComments = () => {
   const {
@@ -89,8 +99,10 @@ export const VideoComments = () => {
       </CreateComment>
       {videoComments.map((comment: CommentParams) => (
         <Comment key={comment.id}>
-          <Title>{comment.user_id}</Title>
-          <Text>{formatDateDistance(comment.created_at)}</Text>
+          <CommentHeader>
+            <Title>{comment.user_id}</Title>
+            <Text>{formatDateDistance(comment.created_at)}</Text>
+          </CommentHeader>
           <Text>{comment.content}</Text >
         </Comment>
       ))}

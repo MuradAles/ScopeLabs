@@ -84,7 +84,7 @@ const Footer = styled.div``;
 
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const { user, setUser } = useContext(appContext);
+  const { user, setUser, setSelectedVideoId } = useContext(appContext);
   const [localUsername, setLocalUsername] = useState('');
   const [showUploadForm, setShowUploadForm] = useState(false);
   const ref = useRef(null);
@@ -94,11 +94,13 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setSelectedVideoId(null);
     setUser({ user_id: localUsername });
   };
 
   const handleLogoClick = () => {
     setUser({ user_id: 'test_guy' });
+    setSelectedVideoId(null);
     setLocalUsername('');
   };
 

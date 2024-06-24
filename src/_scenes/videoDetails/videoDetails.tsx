@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
 import { appContext } from '@_context/context';
@@ -6,6 +6,9 @@ import { formatDateDistance } from '@_utilities/index';
 import { colors, borderRadius } from '@_constants/styleConstants';
 import { VideoComments } from './videoComments';
 import CloseIcon from '@_assets/icons/close';
+import PlayIcon from '@_assets/icons/play';
+import PauseIcon from '@_assets/icons/pause';
+import FullScreenIcon from '@_assets/icons/fullScreen';
 import { editVideo } from '@_services/videosService';
 import { Button, Input, Text, Title, ErrorText } from '@_components/index';
 import { validateStringNotEmpty } from '@_validators/videoValidators';
@@ -25,7 +28,7 @@ const VideoScreen = styled.div`
 `;
 
 const VideoError = styled.div`
-  position:relative;
+  position: relative;
 `;
 
 const VideoErrorImage = styled.img`
@@ -36,11 +39,10 @@ const VideoErrorImage = styled.img`
 `;
 
 const VideoErrorText = styled.div`
-  position:absolute;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   font-size: 1.5rem;
   padding: 5px;
   background-color: ${colors.primarys0l15};
@@ -65,33 +67,47 @@ const VideoDetailsContent = styled.div`
 const VideoPlayer = styled.div`
   position: relative;
   width: 100%;
-  max-width: 800px;
-  height: 0;
-  padding-top: 75%;
+  aspect-ratio: 16/9;
   margin: 5px auto;
-  
-  .react-player {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
 `;
 
 const Controls = styled.div`
-  display: flex;
-  justify-content: space-around;
   position: absolute;
+  display: flex;
+  background-color: ${colors.primarys0l50t40};
+  justify-content: center;
+  margin-bottom: 10px;
+  padding: 10px 10px 10px;
   width: 100%;
-  bottom: calc(0% + 20px);
+  bottom: 0%;
+  z-index: 1000;
+`;
+
+const SpeedControl = styled.div`
+  position: relative;
+  display: inline-block;
+
+  select {
+    padding: 8px;
+    font-size: 1rem;
+  }
+`;
+
+const Select = styled.select`
+  background-color: ${colors.primary};
+  border: none;
+  color: white;
+  border-radius: ${borderRadius}px;
+  cursor: pointer;
+  width: fit-content;
+  padding: 6px 12px;
 `;
 
 const VideoDescription = styled.div`
   display: flex;
   flex-direction: column;
-  padding:10px;
-  width:100%; 
+  padding: 10px;
+  width: 100%;
   background-color: ${colors.primarys0l15};
   border-radius: ${borderRadius}px;
 `;
@@ -100,6 +116,15 @@ const TitleRow = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 6px;
+`;
+
+const ControlButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: ${colors.primarys0l25};
+  }
 `;
 
 export const VideoDetails: React.FC = () => {
@@ -113,11 +138,23 @@ export const VideoDetails: React.FC = () => {
   const [playing, setPlaying] = useState(true);
   const [volume, setVolume] = useState(0.8);
   const [playbackRate, setPlaybackRate] = useState(1);
-
   const [editing, setEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(singleVideo?.title || '');
   const [newDescription, setNewDescription] = useState(singleVideo?.description || '');
   const [error, setError] = useState('');
+  const [isFullscreen, setIsFullscreen] = useState(false); // State to track fullscreen mode
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   const handleEdit = () => {
     setEditing(true);
@@ -162,18 +199,10 @@ export const VideoDetails: React.FC = () => {
   };
 
   const handleFullscreen = () => {
-    const player = playerRef.current;
-    if (player) {
-      const playerElement = player.getInternalPlayer();
-      if (playerElement) {
-        if (playerElement.requestFullscreen) {
-          playerElement.requestFullscreen();
-        } else if (playerElement.webkitRequestFullscreen) { /* Safari */
-          playerElement.webkitRequestFullscreen();
-        } else if (playerElement.msRequestFullscreen) { /* IE11 */
-          playerElement.msRequestFullscreen();
-        }
-      }
+    if (!document.fullscreenElement) {
+      playerContainerRef.current?.requestFullscreen();
+    } else {
+      document.exitFullscreen();
     }
   };
 
@@ -212,14 +241,9 @@ export const VideoDetails: React.FC = () => {
               style={{ position: 'absolute', top: 0, left: 0 }}
             />
             <Controls>
-              <Button onClick={handlePlayPause}>
-                {playing ? 'Pause' : 'Play'}
-              </Button>
-              <Button onClick={() => handlePlaybackRateChange(0.5)}>0.5x</Button>
-              <Button onClick={() => handlePlaybackRateChange(1)}>1x</Button>
-              <Button onClick={() => handlePlaybackRateChange(1.5)}>1.5x</Button>
-              <Button onClick={() => handlePlaybackRateChange(2)}>2x</Button>
-              <Button onClick={handleFullscreen}>Fullscreen</Button>
+              <ControlButton onClick={handlePlayPause}>
+                {playing ? <PauseIcon width={15} fill={colors.white} /> : <PlayIcon width={15} fill={colors.white} />}
+              </ControlButton>
               <input
                 type="range"
                 min="0"
@@ -229,6 +253,21 @@ export const VideoDetails: React.FC = () => {
                 onChange={handleVolumeChange}
                 style={{ width: '100px' }}
               />
+              <SpeedControl>
+                <Select
+                  id="speed-select"
+                  value={playbackRate.toString()}
+                  onChange={(e) => handlePlaybackRateChange(parseFloat(e.target.value))}
+                >
+                  <option value="0.5">0.5x</option>
+                  <option value="1">1x</option>
+                  <option value="1.5">1.5x</option>
+                  <option value="2">2x</option>
+                </Select>
+              </SpeedControl>
+              <ControlButton onClick={handleFullscreen}>
+                <FullScreenIcon width={20} fill={colors.white} />
+              </ControlButton>
             </Controls>
           </VideoPlayer>
         ) : (
@@ -271,3 +310,5 @@ export const VideoDetails: React.FC = () => {
     </VideoScreen>
   );
 };
+
+
