@@ -1,4 +1,3 @@
-// src/components/layout/UploadVideoForm.tsx
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors } from '@_constants/index';
@@ -6,13 +5,18 @@ import { borderRadius, colors } from '@_constants/index';
 import { createVideo } from '@_services/videosService';
 import { validateUserId, validateStringNotEmpty, validateUrl } from '@_validators/index';
 import { appContext } from '@_context/context';
+import { Button } from '@_components/button';
+import { Input } from '@_components/input';
 
 // Styles
 const UploadFormContainer = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
   right: 10%;
   background-color: ${colors.primarys0l25};
-  padding: 10px 20px;
+  padding: 10px;
   border-radius: ${borderRadius}px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -29,33 +33,7 @@ const Header = styled.form`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-`;
-
-const Input = styled.input`
-  margin-bottom: 10px;
-  padding: 8px;
-  background-color: transparent;
-  color: ${colors.white};
-  border: 1px solid ${colors.primarys0l15};
-  border-radius: ${borderRadius}px;
-
-  &::placeholder {
-    color: ${colors.white};
-    opacity: 0.7;
-  }
-`;
-
-const SubmitButton = styled.button`
-  background-color: ${colors.primarys0l15};
-  color: ${colors.white};
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: ${borderRadius}px;
-
-  &:hover {
-    background-color: ${colors.primarys0l25};
-  }
+  gap: 6px;
 `;
 
 const ErrorText = styled.div`
@@ -128,7 +106,7 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
           placeholder="Description"
           onChange={(e) => setDescription(e.target.value)}
         />
-        <SubmitButton type="submit">Upload</SubmitButton>
+        <Button type="submit">Upload</Button>
         {error && <ErrorText>{error}</ErrorText>}
       </Form>
     </UploadFormContainer>

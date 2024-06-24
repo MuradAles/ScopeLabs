@@ -8,7 +8,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getSingleVideo, getUserVideos, getVideoComments, getVideoThumbnail } from './_services';
 
 export const App = () => {
-  const [user, setUser] = useState<User>({ user_id: "john_smith" });
+  const [user, setUser] = useState<User>({ user_id: "test_guy" });
   const [videos, setVideos] = useState<VideoParams[]>([]);
   const [isNewVideoUploaded, setIsNewVideoUploaded] = useState<boolean>(false);
 

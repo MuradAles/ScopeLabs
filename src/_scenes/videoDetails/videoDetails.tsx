@@ -7,6 +7,8 @@ import { colors, borderRadius } from '@_constants/styleConstants';
 import { VideoComments } from './videoComments';
 import CloseIcon from '@_assets/icons/close';
 import { editVideo } from '@_services/videosService';
+import { Button, Input, Text, Title, ErrorText } from '@_components/index';
+import { validateStringNotEmpty } from '@_validators/videoValidators';
 
 const VideoScreen = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
@@ -85,25 +87,6 @@ const Controls = styled.div`
   bottom: calc(0% + 20px);
 `;
 
-const Button = styled.button`
-  background-color: ${colors.primarys0l15};
-  border: none;
-  color: white;
-  border-radius: ${borderRadius}px;
-  cursor: pointer;
-  &:hover {
-    background-color: ${colors.primarys0l25};
-  }
-`;
-
-const CloseButton = styled.div`
-  position: absolute;
-  cursor: pointer;
-  z-index: 1000;
-  right: 5px;
-  top: 5px;
-`;
-
 const VideoDescription = styled.div`
   display: flex;
   flex-direction: column;
@@ -117,40 +100,6 @@ const TitleRow = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 6px;
-`;
-
-const Title = styled.span`
-  font-size: 1rem;
-  font-weight: 700;
-`;
-
-const Text = styled.span`
-  width: 100%;
-`;
-
-const EditableTitle = styled.input`
-  font-size: 1.2rem;
-  font-weight: 550;
-  margin-bottom: 6px;
-  color: ${colors.white};
-  background-color: ${colors.primary};
-  border: 1px solid ${colors.primary};
-  width: 50%;
-  resize: horizontal;
-`;
-
-const EditableText = styled.textarea`
-  resize: vertical;
-  padding: 5px;
-  font-size: 1rem;
-  color: ${colors.white};
-  background-color: ${colors.primary};
-  border: 1px solid ${colors.primary};
-`;
-
-const EditButton = styled.button`
-  position: absolute;
-  right: 20px;
 `;
 
 export const VideoDetails: React.FC = () => {
@@ -168,6 +117,7 @@ export const VideoDetails: React.FC = () => {
   const [editing, setEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(singleVideo?.title || '');
   const [newDescription, setNewDescription] = useState(singleVideo?.description || '');
+  const [error, setError] = useState('');
 
   const handleEdit = () => {
     setEditing(true);
@@ -176,6 +126,14 @@ export const VideoDetails: React.FC = () => {
   };
 
   const handleSaveChanges = async () => {
+    if (!validateStringNotEmpty(newTitle)) {
+      setError('Title must not be empty.');
+      return;
+    }
+    if (!validateStringNotEmpty(newDescription)) {
+      setError('Description must not be empty.');
+      return;
+    }
     try {
       if (newTitle !== singleVideo?.title || newDescription !== singleVideo?.description) {
         await editVideo({
@@ -230,7 +188,16 @@ export const VideoDetails: React.FC = () => {
   return (
     <VideoScreen>
       <VideoDetailsContent>
-        <CloseButton onClick={handleClose}><CloseIcon width="15px" height="15px" /></CloseButton>
+        <Button onClick={handleClose}
+          style={{
+            position: "absolute",
+            backgroundColor: "transparent",
+            right: 0,
+            top: 0,
+            zIndex: 100
+          }}>
+          <CloseIcon width="15px" height="15px" />
+        </Button>
         {ReactPlayer.canPlay(singleVideo.video_url) ? (
           <VideoPlayer ref={playerContainerRef}>
             <ReactPlayer
@@ -267,23 +234,23 @@ export const VideoDetails: React.FC = () => {
         ) : (
           <VideoError>
             <VideoErrorImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
-            <VideoErrorText>Video URL is not playable.</VideoErrorText>
+            <VideoErrorText>Video URL is not playable</VideoErrorText>
           </VideoError>
         )}
-
         <VideoDescription>
           {editing ? (
             <>
-              <EditableTitle
+              Title:<Input
                 type="text"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
               />
-              <EditableText
+              Description:<Input
                 value={newDescription}
                 onChange={(e) => setNewDescription(e.target.value)}
               />
-              <EditButton onClick={handleSaveChanges}>Save</EditButton>
+              <Button onClick={handleSaveChanges}>Save</Button>
+              {error && <ErrorText>{error}</ErrorText>}
             </>
           ) : (
             <>
@@ -292,7 +259,7 @@ export const VideoDetails: React.FC = () => {
                 <Text>{formatDateDistance(singleVideo.created_at)}</Text>
               </TitleRow>
               <Text>{singleVideo.description}</Text>
-              <EditButton onClick={handleEdit}>Edit</EditButton>
+              <Button onClick={handleEdit}>Edit</Button>
             </>
           )}
         </VideoDescription>

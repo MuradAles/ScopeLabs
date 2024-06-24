@@ -6,6 +6,7 @@ export const colors = {
   primarys0l25: 'hsl(0, 0%, 25%)',
   primarys0l50: 'hsl(0, 0%, 50%)',
 
+  text: 'hsl(0, 0%, 75%)',
   red: '#ff5500da',
   white: '#ffffff',
 };

@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { borderRadius, colors } from '@_constants/styleConstants';
 import { validateStringNotEmpty, validateUserId } from '@_validators/videoValidators';
 import { createComment } from '@_services/videosService';
+import { formatDateDistance } from '@_utilities/utilities';
+import { Input, Button, Title, Text, ErrorText } from '@_components/index';
 
 const Comments = styled.div`
   display:flex;
@@ -13,48 +15,16 @@ const Comments = styled.div`
   width:100%;
 `;
 
-const Comment = styled.div``;
+const Comment = styled.div`
+  display:flex;
+  flex-direction:column;
+`;
 
 const CreateComment = styled.form`
   display: flex;
   flex-direction: column;
   background-color:${colors.primarys0l15};
   border-radius: ${borderRadius}px;
-`;
-
-const Input = styled.input`
-  margin-bottom: 10px;
-  padding: 8px;
-  background-color: transparent;
-  color: ${colors.white};
-  border: 1px solid ${colors.primarys0l15};
-  border-radius: ${borderRadius}px;
-
-  &::placeholder {
-    color: ${colors.white};
-    opacity: 0.7;
-  }
-`;
-
-const Title = styled.div``;
-const Text = styled.div``;
-const Date = styled.div``;
-
-const SubmitButton = styled.button`
-  background-color: ${colors.primarys0l15};
-  color: ${colors.white};
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: ${borderRadius}px;
-
-  &:hover {
-    background-color: ${colors.primarys0l25};
-  }
-`;
-
-const ErrorText = styled.div`
-  color: ${colors.red};
 `;
 
 export const VideoComments = () => {
@@ -114,13 +84,13 @@ export const VideoComments = () => {
           value={userComment}
           onChange={(e) => setUserComment(e.target.value)}
         />
-        <SubmitButton type="submit">Upload</SubmitButton>
+        <Button type="submit">Upload</Button>
         {error && <ErrorText>{error}</ErrorText>}
       </CreateComment>
       {videoComments.map((comment: CommentParams) => (
         <Comment key={comment.id}>
           <Title>{comment.user_id}</Title>
-          <Date>{comment.created_at}</Date>
+          <Text>{formatDateDistance(comment.created_at)}</Text>
           <Text>{comment.content}</Text >
         </Comment>
       ))}

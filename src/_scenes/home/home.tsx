@@ -6,12 +6,14 @@ import { formatDateDistance } from '@_utilities/index';
 import { borderRadius } from '@_constants/styleConstants';
 import { VideoDetails } from '@_scenes/videoDetails/videoDetails';
 import { appContext } from '@_context/context';
+import { Text, Title } from '@_components/index';
 
+// Styles
 const Videos = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-`;
+  `;
 
 const Video = styled.div`
   display: flex;
@@ -34,14 +36,7 @@ const VideoImage = styled.img`
   }
 `;
 
-const VideoTitle = styled.div`
-  font-size: 1.1rem;
-  font-weight: 550;
-`;
-
 const VideoCreatedDate = styled.div``;
-
-const Text = styled.div``;
 
 export const Home = () => {
   const {
@@ -77,7 +72,7 @@ export const Home = () => {
                   ) : (
                     <VideoImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
                   )}
-                  <VideoTitle>{video.title}</VideoTitle>
+                  <Title>{video.title}</Title>
                   <VideoCreatedDate>{formatDateDistance(video.created_at)}</VideoCreatedDate>
                   <Text>Comments: {video.num_comments}</Text>
                 </Video>
