@@ -66,6 +66,7 @@ const VideoDetailsContent = styled.div`
 
 const VideoPlayer = styled.div`
   position: relative;
+  min-height: 400px;
   width: 100%;
   aspect-ratio: 16/9;
   margin: 5px auto;
@@ -76,11 +77,14 @@ const Controls = styled.div`
   display: flex;
   background-color: ${colors.primarys0l50t40};
   justify-content: center;
+  align-items: center;
   margin-bottom: 10px;
   padding: 10px 10px 10px;
   width: 100%;
   bottom: 0%;
   z-index: 1000;
+  transition: opacity 0.5s;
+  opacity: ${props => (props.$visible ? 1 : 0)};
 `;
 
 const SpeedControl = styled.div`
@@ -100,7 +104,6 @@ const Select = styled.select`
   border-radius: ${borderRadius}px;
   cursor: pointer;
   width: fit-content;
-  padding: 6px 12px;
 `;
 
 const VideoDescription = styled.div`
@@ -136,13 +139,18 @@ export const VideoDetails: React.FC = () => {
   const playerRef = useRef<ReactPlayer>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(true);
-  const [volume, setVolume] = useState(0.8);
+  const [volume, setVolume] = useState(0.5);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [editing, setEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(singleVideo?.title || '');
   const [newDescription, setNewDescription] = useState(singleVideo?.description || '');
   const [error, setError] = useState('');
-  const [isFullscreen, setIsFullscreen] = useState(false); // State to track fullscreen mode
+  const [, setIsFullscreen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [controlsVisible, setControlsVisible] = useState(true);
+  const [hovering, setHovering] = useState(false);
+  const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -155,6 +163,24 @@ export const VideoDetails: React.FC = () => {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
     };
   }, []);
+
+  useEffect(() => {
+    if (hovering) {
+      setControlsVisible(true);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    } else {
+      timerRef.current = window.setTimeout(() => {
+        setControlsVisible(false);
+      }, 1000);
+    }
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [hovering]);
 
   const handleEdit = () => {
     setEditing(true);
@@ -206,6 +232,18 @@ export const VideoDetails: React.FC = () => {
     }
   };
 
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const seekTo = parseFloat(e.target.value);
+    playerRef.current?.seekTo(seekTo);
+    setCurrentTime(seekTo);
+  };
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
+
   const handleClose = () => {
     setSelectedVideoId(null);
   };
@@ -228,48 +266,67 @@ export const VideoDetails: React.FC = () => {
           <CloseIcon width="15px" height="15px" />
         </Button>
         {ReactPlayer.canPlay(singleVideo.video_url) ? (
-          <VideoPlayer ref={playerContainerRef}>
-            <ReactPlayer
-              ref={playerRef}
-              url={singleVideo.video_url}
-              playing={playing}
-              volume={volume}
-              playbackRate={playbackRate}
-              controls={false}
-              width="100%"
-              height="100%"
-              style={{ position: 'absolute', top: 0, left: 0 }}
-            />
-            <Controls>
-              <ControlButton onClick={handlePlayPause}>
-                {playing ? <PauseIcon width={15} fill={colors.white} /> : <PlayIcon width={15} fill={colors.white} />}
-              </ControlButton>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={volume}
-                onChange={handleVolumeChange}
-                style={{ width: '100px' }}
+          <>
+            <VideoPlayer
+              ref={playerContainerRef}>
+              <ReactPlayer
+                ref={playerRef}
+                url={singleVideo.video_url}
+                playing={playing}
+                volume={volume}
+                playbackRate={playbackRate}
+                controls={false}
+                width="100%"
+                height="100%"
+                onProgress={(progress) => setCurrentTime(progress.playedSeconds)}
+                onDuration={(duration) => setDuration(duration)}
+                style={{ position: 'absolute', top: 0, left: 0 }}
               />
-              <SpeedControl>
-                <Select
-                  id="speed-select"
-                  value={playbackRate.toString()}
-                  onChange={(e) => handlePlaybackRateChange(parseFloat(e.target.value))}
-                >
-                  <option value="0.5">0.5x</option>
-                  <option value="1">1x</option>
-                  <option value="1.5">1.5x</option>
-                  <option value="2">2x</option>
-                </Select>
-              </SpeedControl>
-              <ControlButton onClick={handleFullscreen}>
-                <FullScreenIcon width={20} fill={colors.white} />
-              </ControlButton>
-            </Controls>
-          </VideoPlayer>
+              <Controls $visible={controlsVisible}
+                onMouseLeave={() => setHovering(false)}
+                onMouseEnter={() => setHovering(true)}>
+                <ControlButton onClick={handlePlayPause}>
+                  {playing ? <PauseIcon width={15} fill={colors.white} /> : <PlayIcon width={15} fill={colors.white} />}
+                </ControlButton>
+                <>
+                  <input
+                    type="range"
+                    min={0}
+                    max={duration}
+                    step={0.1}
+                    value={currentTime}
+                    onChange={handleSeek}
+                    style={{ width: 'calc(100% - 500px)' }}
+                  />
+                  <Text style={{ color: colors.white }}>{formatTime(currentTime)} / {formatTime(duration)}</Text>
+                </>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                  style={{ width: '100px' }}
+                />
+                <SpeedControl>
+                  <Select
+                    id="speed-select"
+                    value={playbackRate.toString()}
+                    onChange={(e) => handlePlaybackRateChange(parseFloat(e.target.value))}
+                  >
+                    <option value="0.5">0.5x</option>
+                    <option value="1">1x</option>
+                    <option value="1.5">1.5x</option>
+                    <option value="2">2x</option>
+                  </Select>
+                </SpeedControl>
+                <ControlButton onClick={handleFullscreen}>
+                  <FullScreenIcon width={20} fill={colors.white} />
+                </ControlButton>
+              </Controls>
+            </VideoPlayer>
+          </>
         ) : (
           <VideoError>
             <VideoErrorImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
@@ -302,7 +359,7 @@ export const VideoDetails: React.FC = () => {
             </>
           )}
         </VideoDescription>
-        <Text>
+        <Text style={{ color: colors.white, width: "100%" }}>
           {singleVideo.num_comments} : comments
         </Text>
         <VideoComments />
@@ -310,5 +367,3 @@ export const VideoDetails: React.FC = () => {
     </VideoScreen>
   );
 };
-
-
