@@ -67,7 +67,7 @@ interface UploadVideoFormProps {
 }
 
 export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => {
-  const { user } = useContext(appContext);
+  const { user, setIsNewVideoUploaded } = useContext(appContext);
 
   const [user_id, setUserId] = useState(user.user_id);
   const [video_url, setVideoUrl] = useState('');
@@ -95,8 +95,8 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
       return;
     }
     try {
+      setIsNewVideoUploaded(true);
       await createVideo({ user_id, description, video_url, title });
-      console.log('Video created successfully:');
       onClose();
     } catch (error) {
       console.error('Failed to create video:', error);

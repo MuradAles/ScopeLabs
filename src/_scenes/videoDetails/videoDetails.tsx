@@ -4,6 +4,8 @@ import ReactPlayer from 'react-player';
 import { VideoParams } from '@_interfaces/types';
 import { formatDateDistance } from '@_utilities/index';
 import { colors, borderRadius } from '@_constants/styleConstants';
+import { VideoComments } from './videoComments';
+import CloseIcon from '@_assets/icons/close';
 
 const VideoScreen = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
@@ -60,7 +62,8 @@ const VideoDetailsContent = styled.div`
 const VideoPlayer = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 60vh;
+  margin: 5px;
 `;
 
 const Controls = styled.div`
@@ -81,6 +84,36 @@ const Button = styled.button`
     background-color: ${colors.primarys0l25};
   }
 `;
+
+const CloseButton = styled.div`
+  position: absolute;
+  cursor: pointer;
+  z-index: 1000;
+  right: 5px;
+  top: 5px;
+`;
+
+const VideoDescription = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding:10px;
+  width:100%; 
+  background-color: ${colors.primarys0l15};
+  border-radius: ${borderRadius}px;
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+`;
+
+const Title = styled.span`
+  font-size: 1.2rem;
+  font-weight: 550;
+`;
+
+const Text = styled.span``;
 
 interface VideoDetailProps {
   video: VideoParams;
@@ -121,10 +154,10 @@ export const VideoDetails: React.FC<VideoDetailProps> = ({ video, onClose }) => 
       }
     }
   };
-
   return (
     <VideoScreen>
       <VideoDetailsContent>
+        <CloseButton onClick={onClose}><CloseIcon width="15px" height="15px" /></CloseButton>
         {ReactPlayer.canPlay(video.video_url) ? (
           <VideoPlayer ref={playerContainerRef}>
             <ReactPlayer
@@ -163,10 +196,15 @@ export const VideoDetails: React.FC<VideoDetailProps> = ({ video, onClose }) => 
             <VideoErrorText>Video URL is not playable.</VideoErrorText>
           </VideoError>
         )}
-        <h2>{video.title}</h2>
-        <p>Created at: {formatDateDistance(video.created_at)}</p>
-        <p>Description: {video.description}</p>
-        <Button onClick={onClose}>Close</Button>
+
+        <VideoDescription>
+          <TitleRow>
+            <Title>{video.title}</Title>
+            <Text>{formatDateDistance(video.created_at)}</Text>
+          </TitleRow>
+          <Text>{video.description}</Text>
+        </VideoDescription>
+        <VideoComments />
       </VideoDetailsContent>
     </VideoScreen>
   );

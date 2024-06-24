@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { SearchIcon } from '@_assets/icons/search';
 import { appContext } from '@_context/index';
 import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
-import { UploadVideoForm } from './uploadVideoForm';
+import { UploadVideoForm } from '@_components/layout/index';
 
 const StyleHeader = styled.div`
   position: sticky;
