@@ -1,11 +1,11 @@
-import { StyleSheetManager } from 'styled-components';
-import { Route, Routes } from 'react-router-dom';
-import { GlobalStyle } from './globalStyle';
-import { Home } from '@_scenes/index';
 import { appContext } from '@_context/index';
 import { CommentParams, User, VideoParams } from '@_interfaces/index';
-import { useState, useEffect, useCallback } from 'react';
 import { getSingleVideo, getUserVideos, getVideoComments, getVideoThumbnail } from './_services';
+import { GlobalStyle } from './globalStyle';
+import { Home } from '@_scenes/index';
+import { Route, Routes } from 'react-router-dom';
+import { StyleSheetManager } from 'styled-components';
+import { useEffect, useState, useCallback } from 'react';
 
 export const App = () => {
   const [user, setUser] = useState<User>({ user_id: "test_guy" });

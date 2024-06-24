@@ -1,18 +1,21 @@
-import { createContext } from "react";
-import { User, VideoParams } from "@_interfaces/index";
+import { createContext, Dispatch, SetStateAction } from "react";
+import { CommentParams, User, VideoParams } from "@_interfaces/index";
 
 interface AppContextInterface {
   user: User;
-  setUser: User;
+  setUser: Dispatch<SetStateAction<User>>;
   videos: VideoParams[];
-  setIsNewVideoUploaded: boolean;
-  setIsVideoUpdated: boolean;
+  setIsNewVideoUploaded: Dispatch<SetStateAction<boolean>>;
+  setIsVideoUpdated: Dispatch<SetStateAction<boolean>>;
   selectedVideoId: string | null;
-  setSelectedVideoId: string | null;
+  setSelectedVideoId: Dispatch<SetStateAction<string | null>>;
   singleVideo: VideoParams | null;
-  setSingleVideo: VideoParams | null;
+  setSingleVideo: Dispatch<SetStateAction<VideoParams | null>>;
+  videoComments: CommentParams[];
+  setVideoComments: Dispatch<SetStateAction<CommentParams[]>>;
+  setIsCommentCreated: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
-  setLoading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 export const appContext = createContext<AppContextInterface | undefined>(undefined);

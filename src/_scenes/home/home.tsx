@@ -1,12 +1,12 @@
-import styled from 'styled-components';
-import { useContext, useEffect } from 'react';
-import { Layout } from '@_components/layout';
-import { VideoParams } from '@_interfaces/index';
-import { formatDateDistance } from '@_utilities/index';
-import { borderRadius } from '@_constants/styleConstants';
-import { VideoDetails } from '@_scenes/videoDetails/videoDetails';
 import { appContext } from '@_context/context';
+import { Layout } from '@_components/layout';
 import { Text, Title } from '@_components/index';
+import { VideoDetails } from '@_scenes/videoDetails/videoDetails';
+import { VideoParams } from '@_interfaces/index';
+import { borderRadius } from '@_constants/styleConstants';
+import { formatDateDistance } from '@_utilities/index';
+import { useContext, useEffect } from 'react';
+import styled from 'styled-components';
 
 // Styles
 const Videos = styled.div`

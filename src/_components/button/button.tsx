@@ -1,6 +1,6 @@
+import { borderRadius, colors } from '@_constants/index';
 import styled from 'styled-components';
 
-import { borderRadius, colors } from '@_constants/index';
 
 export const Button = styled.button`
   background-color: ${colors.primary};

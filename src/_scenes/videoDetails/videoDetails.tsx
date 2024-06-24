@@ -1,17 +1,18 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
-import styled from 'styled-components';
-import ReactPlayer from 'react-player';
+import { Button, Input, Text, Title, ErrorText } from '@_components/index';
 import { appContext } from '@_context/context';
+import { editVideo } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/index';
 import { colors, borderRadius } from '@_constants/styleConstants';
-import { VideoComments } from './videoComments';
 import CloseIcon from '@_assets/icons/close';
-import PlayIcon from '@_assets/icons/play';
-import PauseIcon from '@_assets/icons/pause';
 import FullScreenIcon from '@_assets/icons/fullScreen';
-import { editVideo } from '@_services/videosService';
-import { Button, Input, Text, Title, ErrorText } from '@_components/index';
+import PauseIcon from '@_assets/icons/pause';
+import PlayIcon from '@_assets/icons/play';
+import React, { useState, useRef, useContext, useEffect } from 'react';
+import ReactPlayer from 'react-player';
+import styled from 'styled-components';
+import { VideoComments } from './videoComments';
 import { validateStringNotEmpty } from '@_validators/videoValidators';
+
 
 const VideoScreen = styled.div`
   background-color: rgba(0, 0, 0, 0.8);

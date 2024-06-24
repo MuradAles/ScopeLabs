@@ -1,12 +1,13 @@
-import { useState, useContext } from 'react';
 import { appContext } from '@_context/context';
+import { Button, ErrorText, Input, Text, Title } from '@_components/index';
 import { CommentParams } from '@_interfaces/types';
-import styled from 'styled-components';
-import { borderRadius, colors } from '@_constants/styleConstants';
-import { validateStringNotEmpty, validateUserId } from '@_validators/videoValidators';
+import { colors, borderRadius } from '@_constants/styleConstants';
 import { createComment } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/utilities';
-import { Input, Button, Title, Text, ErrorText } from '@_components/index';
+import { useContext, useState } from 'react';
+import styled from 'styled-components';
+import { validateStringNotEmpty, validateUserId } from '@_validators/videoValidators';
+
 
 const Comments = styled.div`
   display:flex;
