@@ -1,12 +1,10 @@
 import styled from 'styled-components';
-import { useContext, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Layout } from '@_components/layout';
-
 import { VideoParams } from '@_interfaces/index';
-
-import { formatDateDistance } from '@_utilities/index'
+import { formatDateDistance } from '@_utilities/index';
 import { borderRadius } from '@_constants/styleConstants';
-import { VideoDetails } from '@_scenes/index';
+import { VideoDetails } from '@_scenes/videoDetails/videoDetails';
 import { appContext } from '@_context/context';
 
 const Videos = styled.div`
@@ -46,17 +44,23 @@ const VideoCreatedDate = styled.div``;
 const Text = styled.div``;
 
 export const Home = () => {
-  const { videos } = useContext(appContext);
-  const [loading, setLoading] = useState(false);
-  const [selectedVideo, setSelectedVideo] = useState<VideoParams | null>(null);
+  const {
+    videos,
+    selectedVideoId,
+    setSelectedVideoId,
+    setSingleVideo,
+    loading
+  } = useContext(appContext);
 
-  const openVideoDetails = (video: VideoParams) => {
-    setSelectedVideo(video);
+  const selectVideoDetails = (video: VideoParams) => {
+    setSelectedVideoId(video.id);
   };
 
-  const closeVideoDetails = () => {
-    setSelectedVideo(null);
-  };
+  useEffect(() => {
+    if (!selectedVideoId) {
+      setSingleVideo(null);
+    }
+  }, [selectedVideoId, setSingleVideo]);
 
   return (
     <Layout>
@@ -67,7 +71,7 @@ export const Home = () => {
           <Videos>
             {videos.length > 0 ? (
               videos.map((video: VideoParams) => (
-                <Video key={video.id} onClick={() => openVideoDetails(video)}>
+                <Video key={video.id} onClick={() => selectVideoDetails(video)}>
                   {video.thumbnail_url ? (
                     <VideoImage src={video.thumbnail_url} alt={video.title} />
                   ) : (
@@ -75,17 +79,16 @@ export const Home = () => {
                   )}
                   <VideoTitle>{video.title}</VideoTitle>
                   <VideoCreatedDate>{formatDateDistance(video.created_at)}</VideoCreatedDate>
+                  <Text>Comments: {video.num_comments}</Text>
                 </Video>
               ))
             ) : (
               <Text>No videos found.</Text>
             )}
           </Videos>
-          {selectedVideo && (
-            <VideoDetails video={selectedVideo} onClose={closeVideoDetails} />
-          )}
         </>
       )}
+      {selectedVideoId && <VideoDetails />}
     </Layout>
   );
 };

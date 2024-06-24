@@ -89,9 +89,8 @@ export const getSingleVideo = async (video_id: string) => {
       throw new Error(`Failed to get video: ${response.statusText}`);
     }
     const GetSingleVideo = await response.json();
-    console.log(GetSingleVideo);
     console.log('Video loaded successfully');
-    return GetSingleVideo;
+    return GetSingleVideo.video;
   } catch (error) {
     console.log(error)
   }
@@ -136,7 +135,7 @@ export const getVideoComments = async (video_id: string) => {
     const GetVideoComments = await response.json();
     console.log(GetVideoComments);
     console.log('Comment loaded successfully');
-    return GetVideoComments;
+    return GetVideoComments.comments;
   } catch (error) {
     console.log(error)
   }

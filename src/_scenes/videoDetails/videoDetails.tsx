@@ -1,11 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
-import { VideoParams } from '@_interfaces/types';
+import { appContext } from '@_context/context';
 import { formatDateDistance } from '@_utilities/index';
 import { colors, borderRadius } from '@_constants/styleConstants';
 import { VideoComments } from './videoComments';
 import CloseIcon from '@_assets/icons/close';
+import { editVideo } from '@_services/videosService';
 
 const VideoScreen = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
@@ -62,8 +63,18 @@ const VideoDetailsContent = styled.div`
 const VideoPlayer = styled.div`
   position: relative;
   width: 100%;
-  height: 60vh;
-  margin: 5px;
+  max-width: 800px;
+  height: 0;
+  padding-top: 75%;
+  margin: 5px auto;
+  
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const Controls = styled.div`
@@ -109,23 +120,76 @@ const TitleRow = styled.div`
 `;
 
 const Title = styled.span`
-  font-size: 1.2rem;
-  font-weight: 550;
+  font-size: 1rem;
+  font-weight: 700;
 `;
 
-const Text = styled.span``;
+const Text = styled.span`
+  width: 100%;
+`;
 
-interface VideoDetailProps {
-  video: VideoParams;
-  onClose: () => void;
-}
+const EditableTitle = styled.input`
+  font-size: 1.2rem;
+  font-weight: 550;
+  margin-bottom: 6px;
+  color: ${colors.white};
+  background-color: ${colors.primary};
+  border: 1px solid ${colors.primary};
+  width: 50%;
+  resize: horizontal;
+`;
 
-export const VideoDetails: React.FC<VideoDetailProps> = ({ video, onClose }) => {
+const EditableText = styled.textarea`
+  resize: vertical;
+  padding: 5px;
+  font-size: 1rem;
+  color: ${colors.white};
+  background-color: ${colors.primary};
+  border: 1px solid ${colors.primary};
+`;
+
+const EditButton = styled.button`
+  position: absolute;
+  right: 20px;
+`;
+
+export const VideoDetails: React.FC = () => {
+  const {
+    singleVideo,
+    setSelectedVideoId,
+    setIsVideoUpdated,
+  } = useContext(appContext);
   const playerRef = useRef<ReactPlayer>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(true);
   const [volume, setVolume] = useState(0.8);
   const [playbackRate, setPlaybackRate] = useState(1);
+
+  const [editing, setEditing] = useState(false);
+  const [newTitle, setNewTitle] = useState(singleVideo?.title || '');
+  const [newDescription, setNewDescription] = useState(singleVideo?.description || '');
+
+  const handleEdit = () => {
+    setEditing(true);
+    setNewTitle(singleVideo.title);
+    setNewDescription(singleVideo.description);
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      if (newTitle !== singleVideo?.title || newDescription !== singleVideo?.description) {
+        await editVideo({
+          video_id: singleVideo.id,
+          title: newTitle,
+          description: newDescription,
+        });
+        setIsVideoUpdated(true);
+      }
+      setEditing(false);
+    } catch (error) {
+      console.error('Failed to update video:', error);
+    }
+  };
 
   const handlePlayPause = () => {
     setPlaying(!playing);
@@ -154,21 +218,31 @@ export const VideoDetails: React.FC<VideoDetailProps> = ({ video, onClose }) => 
       }
     }
   };
+
+  const handleClose = () => {
+    setSelectedVideoId(null);
+  };
+
+  if (!singleVideo) {
+    return null;
+  }
+
   return (
     <VideoScreen>
       <VideoDetailsContent>
-        <CloseButton onClick={onClose}><CloseIcon width="15px" height="15px" /></CloseButton>
-        {ReactPlayer.canPlay(video.video_url) ? (
+        <CloseButton onClick={handleClose}><CloseIcon width="15px" height="15px" /></CloseButton>
+        {ReactPlayer.canPlay(singleVideo.video_url) ? (
           <VideoPlayer ref={playerContainerRef}>
             <ReactPlayer
               ref={playerRef}
-              url={video.video_url}
+              url={singleVideo.video_url}
               playing={playing}
               volume={volume}
               playbackRate={playbackRate}
               controls={false}
               width="100%"
               height="100%"
+              style={{ position: 'absolute', top: 0, left: 0 }}
             />
             <Controls>
               <Button onClick={handlePlayPause}>
@@ -198,12 +272,33 @@ export const VideoDetails: React.FC<VideoDetailProps> = ({ video, onClose }) => 
         )}
 
         <VideoDescription>
-          <TitleRow>
-            <Title>{video.title}</Title>
-            <Text>{formatDateDistance(video.created_at)}</Text>
-          </TitleRow>
-          <Text>{video.description}</Text>
+          {editing ? (
+            <>
+              <EditableTitle
+                type="text"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+              />
+              <EditableText
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+              />
+              <EditButton onClick={handleSaveChanges}>Save</EditButton>
+            </>
+          ) : (
+            <>
+              <TitleRow>
+                <Title>{singleVideo.title}</Title>
+                <Text>{formatDateDistance(singleVideo.created_at)}</Text>
+              </TitleRow>
+              <Text>{singleVideo.description}</Text>
+              <EditButton onClick={handleEdit}>Edit</EditButton>
+            </>
+          )}
         </VideoDescription>
+        <Text>
+          {singleVideo.num_comments} : comments
+        </Text>
         <VideoComments />
       </VideoDetailsContent>
     </VideoScreen>

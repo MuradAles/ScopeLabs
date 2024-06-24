@@ -31,3 +31,11 @@ export interface VideoParams {
   video_url: string;
   thumbnail_url?: string;
 }
+
+export interface CommentParams {
+  content: string;
+  created_at: string;
+  id: string;
+  user_id: string;
+  video_id: string;
+}
