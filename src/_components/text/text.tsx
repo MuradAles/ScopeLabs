@@ -8,7 +8,7 @@ export const Title = styled.span`
   overflow: hidden;
   display: -webkit-box;
   line-height: 1.1;
-  max-height: 2.8em;
+  max-height: 2.2em;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
