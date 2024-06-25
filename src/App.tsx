@@ -8,7 +8,7 @@ import { StyleSheetManager } from 'styled-components';
 import { useEffect, useState, useCallback } from 'react';
 
 export const App = () => {
-  const [user, setUser] = useState<User>({ user_id: "test_guy" });
+  const [user, setUser] = useState<User>({ user_id: "murad_aleskerov" });
   const [videos, setVideos] = useState<VideoParams[]>([]);
   const [isNewVideoUploaded, setIsNewVideoUploaded] = useState<boolean>(false);
 

@@ -1,15 +1,15 @@
-import { appContext } from '@_context/index';
-import { borderRadius, colors } from '@_constants/index';
-import { ReactNode, useRef, useState, useContext } from 'react';
-import { useClickAway } from 'react-use';
+import { useRef, useState, ReactNode, useContext } from 'react';
 import styled from 'styled-components';
+import { useClickAway } from 'react-use';
+import { borderRadius, colors } from '@_constants/index';
+import { Link } from 'react-router-dom';
+
+import { SearchIcon } from '@_assets/icons/search';
+import { appContext } from '@_context/index';
+import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
+import { UploadVideoForm } from '@_components/layout/index';
 import { Button } from '@_components/button';
 import { Input } from '@_components/input';
-import { Link } from 'react-router-dom';
-import { SearchIcon } from '@_assets/icons/search';
-import { UploadVideoForm } from '@_components/layout/index';
-import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
-
 
 // Styles
 const StyleHeader = styled.div`
@@ -99,7 +99,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   };
 
   const handleLogoClick = () => {
-    setUser({ user_id: 'test_guy' });
+    setUser({ user_id: 'murad_aleskerov' });
     setSelectedVideoId(null);
     setLocalUsername('');
   };

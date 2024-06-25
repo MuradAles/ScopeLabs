@@ -36,8 +36,6 @@ const VideoImage = styled.img`
   }
 `;
 
-const VideoCreatedDate = styled.div``;
-
 export const Home = () => {
   const {
     videos,
@@ -73,7 +71,7 @@ export const Home = () => {
                     <VideoImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
                   )}
                   <Title>{video.title}</Title>
-                  <VideoCreatedDate>{formatDateDistance(video.created_at)}</VideoCreatedDate>
+                  <Text>{formatDateDistance(video.created_at)}</Text>
                   <Text>Comments: {video.num_comments}</Text>
                 </Video>
               ))

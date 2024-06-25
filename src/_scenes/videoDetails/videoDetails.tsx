@@ -64,6 +64,11 @@ const VideoDetailsContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none; 
+  }
 `;
 
 const VideoPlayer = styled.div`
@@ -119,6 +124,7 @@ const VideoDescription = styled.div`
 
 const TitleRow = styled.div`
   display: flex;
+  align-items: end;
   gap: 10px;
   margin-bottom: 6px;
 `;
@@ -358,11 +364,14 @@ export const VideoDetails: React.FC = () => {
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
               />
-              Description:<Input
-                value={newDescription}
-                onChange={(e) => setNewDescription(e.target.value)}
-              />
-              <Button onClick={handleSaveChanges}>Save</Button>
+              Description:
+              <TitleRow>
+                <Input
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                />
+                <Button onClick={handleSaveChanges}>Save</Button>
+              </TitleRow>
               {error && <ErrorText>{error}</ErrorText>}
             </>
           ) : (
@@ -371,8 +380,10 @@ export const VideoDetails: React.FC = () => {
                 <Title style={{ display: "flex", maxHeight: "none" }}>{singleVideo.title}</Title>
                 <Text>{formatDateDistance(singleVideo.created_at)}</Text>
               </TitleRow>
-              <Text>{singleVideo.description}</Text>
-              <Button onClick={handleEdit}>Edit</Button>
+              <TitleRow>
+                <Text>{singleVideo.description}</Text>
+                <Button style={{ height: "2rem" }} onClick={handleEdit}>Edit</Button>
+              </TitleRow>
             </>
           )}
         </VideoDescription>
