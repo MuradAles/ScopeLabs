@@ -4,7 +4,7 @@ import { borderRadius, colors } from '@_constants/index';
 
 import { createVideo } from '@_services/videosService';
 import { validateUserId, validateStringNotEmpty, validateUrl } from '@_validators/index';
-import { appContext } from '@_context/context';
+import { AppContextInterface, appContext } from '@_context/context';
 import { Button } from '@_components/button';
 import { Input } from '@_components/input';
 
@@ -45,7 +45,7 @@ interface UploadVideoFormProps {
 }
 
 export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => {
-  const { user, setIsNewVideoUploaded } = useContext(appContext);
+  const { user, setIsNewVideoUploaded } = useContext(appContext) as AppContextInterface;
 
   const [user_id, setUserId] = useState(user.user_id);
   const [video_url, setVideoUrl] = useState('');

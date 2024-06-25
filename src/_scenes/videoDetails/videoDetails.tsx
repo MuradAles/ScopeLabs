@@ -1,5 +1,5 @@
 import { Button, Input, Text, Title, ErrorText } from '@_components/index';
-import { appContext } from '@_context/context';
+import { AppContextInterface, appContext } from '@_context/context';
 import { editVideo } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/index';
 import { colors, borderRadius } from '@_constants/styleConstants';
@@ -79,7 +79,7 @@ const VideoPlayer = styled.div`
   margin: 5px auto;
 `;
 
-const Controls = styled.div`
+const Controls = styled.div<{ $visible: boolean }>`
   position: absolute;
   display: flex;
   background-color: ${colors.primarys0l50t40};
@@ -124,9 +124,15 @@ const VideoDescription = styled.div`
 
 const TitleRow = styled.div`
   display: flex;
-  align-items: end;
   gap: 10px;
   margin-bottom: 6px;
+`;
+
+const DescriptionRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 `;
 
 const ControlButton = styled.button`
@@ -140,7 +146,7 @@ export const VideoDetails: React.FC = () => {
     singleVideo,
     setSelectedVideoId,
     setIsVideoUpdated,
-  } = useContext(appContext);
+  } = useContext(appContext) as AppContextInterface;
   const playerRef = useRef<ReactPlayer>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(true);
@@ -201,12 +207,17 @@ export const VideoDetails: React.FC = () => {
   }, [hovering]);
 
   const handleEdit = () => {
-    setEditing(true);
-    setNewTitle(singleVideo.title);
-    setNewDescription(singleVideo.description);
+    if (singleVideo) {
+      setEditing(true);
+      setNewTitle(singleVideo.title);
+      setNewDescription(singleVideo.description);
+    }
   };
 
   const handleSaveChanges = async () => {
+    if (!singleVideo) {
+      return;
+    }
     if (!validateStringNotEmpty(newTitle)) {
       setError('Title must not be empty.');
       return;
@@ -359,19 +370,19 @@ export const VideoDetails: React.FC = () => {
         <VideoDescription>
           {editing ? (
             <>
-              Title:<Input
+              <Input
                 type="text"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
+                style={{ marginBottom: "6px", fontWeight: 700, fontSize: "1.1rem" }}
               />
-              Description:
-              <TitleRow>
+              <DescriptionRow>
                 <Input
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
                 />
                 <Button onClick={handleSaveChanges}>Save</Button>
-              </TitleRow>
+              </DescriptionRow>
               {error && <ErrorText>{error}</ErrorText>}
             </>
           ) : (
@@ -380,10 +391,10 @@ export const VideoDetails: React.FC = () => {
                 <Title style={{ display: "flex", maxHeight: "none" }}>{singleVideo.title}</Title>
                 <Text>{formatDateDistance(singleVideo.created_at)}</Text>
               </TitleRow>
-              <TitleRow>
+              <DescriptionRow>
                 <Text>{singleVideo.description}</Text>
                 <Button style={{ height: "2rem" }} onClick={handleEdit}>Edit</Button>
-              </TitleRow>
+              </DescriptionRow>
             </>
           )}
         </VideoDescription>

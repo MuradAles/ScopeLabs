@@ -1,4 +1,4 @@
-import { appContext } from '@_context/context';
+import { AppContextInterface, appContext } from '@_context/context';
 import { Button, ErrorText, Input, Text, Title } from '@_components/index';
 import { CommentParams } from '@_interfaces/types';
 import { colors, borderRadius } from '@_constants/styleConstants';
@@ -44,12 +44,15 @@ export const VideoComments = () => {
     videoComments,
     setIsVideoUpdated,
     setIsCommentCreated,
-  } = useContext(appContext);
+  } = useContext(appContext) as AppContextInterface;
   const [userId, setUserId] = useState<string>('');
   const [userComment, setUserComment] = useState<string>('');
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
+    if (!singleVideo) {
+      return;
+    }
     e.preventDefault();
     if (!validateUserId(userId)) {
       setError('Invalid User ID');

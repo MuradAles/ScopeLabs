@@ -5,7 +5,7 @@ import { borderRadius, colors } from '@_constants/index';
 import { Link } from 'react-router-dom';
 
 import { SearchIcon } from '@_assets/icons/search';
-import { appContext } from '@_context/index';
+import { AppContextInterface, appContext } from '@_context/index';
 import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
 import { UploadVideoForm } from '@_components/layout/index';
 import { Button } from '@_components/button';
@@ -84,7 +84,7 @@ const Footer = styled.div``;
 
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const { user, setUser, setSelectedVideoId } = useContext(appContext);
+  const { user, setUser, setSelectedVideoId } = useContext(appContext) as AppContextInterface;
   const [localUsername, setLocalUsername] = useState('');
   const [showUploadForm, setShowUploadForm] = useState(false);
   const ref = useRef(null);

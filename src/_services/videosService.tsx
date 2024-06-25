@@ -69,7 +69,6 @@ export const editVideo = async ({ video_id, title, description }: EditVideoParam
       throw new Error(`Failed to change video: ${response.statusText}`);
     }
     const newEditVideo = await response.json();
-    console.log(newEditVideo);
     console.log('Video changed successfully');
     return newEditVideo;
   } catch (error) {
@@ -113,7 +112,6 @@ export const createComment = async ({ video_id, content, user_id }: CreateCommen
       throw new Error(`Failed to create comment: ${response.statusText}`);
     }
     const NewComment = await response.json();
-    console.log(NewComment);
     console.log('Comment created successfully');
     return NewComment;
   } catch (error) {
@@ -133,7 +131,6 @@ export const getVideoComments = async (video_id: string) => {
       throw new Error(`Failed to get Comments: ${response.statusText}`);
     }
     const GetVideoComments = await response.json();
-    console.log(GetVideoComments);
     console.log('Comment loaded successfully');
     return GetVideoComments.comments;
   } catch (error) {
