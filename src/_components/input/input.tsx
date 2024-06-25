@@ -1,7 +1,7 @@
 import { borderRadius, colors } from "@_constants/styleConstants";
 import styled from "styled-components";
 
-export const Input = styled.input.attrs({ maxLength: 200 })`
+export const Input = styled.input.attrs({ maxLength: 500 })`
   height: 100%;
   width: 100%;
   border: none;
