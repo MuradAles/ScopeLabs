@@ -1,30 +1,21 @@
-import { createContext, useState, ReactNode, useContext } from 'react';
-import { VideoParams } from '@_interfaces/index';
+import { createContext, Dispatch, SetStateAction } from "react";
+import { CommentParams, User, VideoParams } from "@_interfaces/index";
 
-interface UserContextProps {
-  username: string;
-  setUsername: (username: string) => void;
+interface AppContextInterface {
+  user: User;
+  setUser: Dispatch<SetStateAction<User>>;
   videos: VideoParams[];
-  setVideos: (videos: VideoParams[]) => void;
+  setIsNewVideoUploaded: Dispatch<SetStateAction<boolean>>;
+  setIsVideoUpdated: Dispatch<SetStateAction<boolean>>;
+  selectedVideoId: string | null;
+  setSelectedVideoId: Dispatch<SetStateAction<string | null>>;
+  singleVideo: VideoParams | null;
+  setSingleVideo: Dispatch<SetStateAction<VideoParams | null>>;
+  videoComments: CommentParams[];
+  setVideoComments: Dispatch<SetStateAction<CommentParams[]>>;
+  setIsCommentCreated: Dispatch<SetStateAction<boolean>>;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-const UserContext = createContext<UserContextProps | undefined>(undefined);
-
-export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [username, setUsername] = useState('john_smith');
-  const [videos, setVideos] = useState<VideoParams[]>([]);
-
-  return (
-    <UserContext.Provider value={{ username, setUsername, videos, setVideos }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
-
-export const useUser = () => {
-  const context = useContext(UserContext);
-  if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
-  }
-  return context;
-};
+export const appContext = createContext<AppContextInterface | undefined>(undefined);

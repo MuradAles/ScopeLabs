@@ -1,22 +1,19 @@
-import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { appContext } from '@_context/context';
 import { Layout } from '@_components/layout';
-
-import { getUserVideos } from '@_services/index';
-import { getVideoThumbnail } from '@_services/index';
-
+import { Text, Title } from '@_components/index';
+import { VideoDetails } from '@_scenes/videoDetails/videoDetails';
 import { VideoParams } from '@_interfaces/index';
-
-import { formatDateDistance } from '@_utilities/index'
 import { borderRadius } from '@_constants/styleConstants';
-import { useUser } from '@_context/index';
-import { VideoDetails } from '@_scenes/index';
+import { formatDateDistance } from '@_utilities/index';
+import { useContext, useEffect } from 'react';
+import styled from 'styled-components';
 
+// Styles
 const Videos = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-`;
+  `;
 
 const Video = styled.div`
   display: flex;
@@ -39,48 +36,26 @@ const VideoImage = styled.img`
   }
 `;
 
-const VideoTitle = styled.div`
-  font-size: 1.1rem;
-  font-weight: 550;
-`;
-
 const VideoCreatedDate = styled.div``;
 
-const Text = styled.div``;
-
 export const Home = () => {
-  const { username, videos, setVideos } = useUser();
-  const [loading, setLoading] = useState(true);
-  const [selectedVideo, setSelectedVideo] = useState<VideoParams | null>(null);
+  const {
+    videos,
+    selectedVideoId,
+    setSelectedVideoId,
+    setSingleVideo,
+    loading
+  } = useContext(appContext);
+
+  const selectVideoDetails = (video: VideoParams) => {
+    setSelectedVideoId(video.id);
+  };
 
   useEffect(() => {
-    const fetchVideos = async () => {
-      try {
-        const response = await getUserVideos(username);
-        const videosWithThumbnails = await Promise.all(
-          response.map(async (video: VideoParams) => {
-            const thumbnailUrl = await getVideoThumbnail(video.video_url);
-            return { ...video, thumbnail_url: thumbnailUrl };
-          })
-        );
-        setVideos(videosWithThumbnails);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching videos:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchVideos();
-  }, [username, setVideos]);
-
-  const openVideoDetails = (video: VideoParams) => {
-    setSelectedVideo(video);
-  };
-
-  const closeVideoDetails = () => {
-    setSelectedVideo(null);
-  };
+    if (!selectedVideoId) {
+      setSingleVideo(null);
+    }
+  }, [selectedVideoId, setSingleVideo]);
 
   return (
     <Layout>
@@ -91,25 +66,24 @@ export const Home = () => {
           <Videos>
             {videos.length > 0 ? (
               videos.map((video: VideoParams) => (
-                <Video key={video.id} onClick={() => openVideoDetails(video)}>
+                <Video key={video.id} onClick={() => selectVideoDetails(video)}>
                   {video.thumbnail_url ? (
                     <VideoImage src={video.thumbnail_url} alt={video.title} />
                   ) : (
                     <VideoImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
                   )}
-                  <VideoTitle>{video.title}</VideoTitle>
+                  <Title>{video.title}</Title>
                   <VideoCreatedDate>{formatDateDistance(video.created_at)}</VideoCreatedDate>
+                  <Text>Comments: {video.num_comments}</Text>
                 </Video>
               ))
             ) : (
               <Text>No videos found.</Text>
             )}
           </Videos>
-          {selectedVideo && (
-            <VideoDetails video={selectedVideo} onClose={closeVideoDetails} />
-          )}
         </>
       )}
+      {selectedVideoId && <VideoDetails />}
     </Layout>
   );
 };

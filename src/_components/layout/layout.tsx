@@ -1,14 +1,17 @@
-import { useRef, useState, ReactNode } from 'react';
-import styled from 'styled-components';
-import { useClickAway } from 'react-use';
+import { appContext } from '@_context/index';
 import { borderRadius, colors } from '@_constants/index';
+import { ReactNode, useRef, useState, useContext } from 'react';
+import { useClickAway } from 'react-use';
+import styled from 'styled-components';
+import { Button } from '@_components/button';
+import { Input } from '@_components/input';
 import { Link } from 'react-router-dom';
-
 import { SearchIcon } from '@_assets/icons/search';
+import { UploadVideoForm } from '@_components/layout/index';
 import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
-import { UploadVideoForm } from './uploadVideoForm';
-import { useUser } from '@_context/index';
 
+
+// Styles
 const StyleHeader = styled.div`
   position: sticky;
   top: 0;
@@ -59,28 +62,6 @@ const Search = styled.form`
   }
 `;
 
-const InputButton = styled.button`
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const InputName = styled.input`
-  height: 100%;
-  width: 100%;
-  border: none;
-  color: ${colors.white};
-  background-color: transparent;
-  font-size: 1.2rem;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
 const UploadVideo = styled.div`
   position: relative;
   justify-self: center;
@@ -91,6 +72,7 @@ const CurrentUsername = styled.div`
   display:flex;
   align-items:center;
   font-size: 1.5rem;
+  margin-top: 10px;
   margin-left: 25px;
 `;
 
@@ -102,7 +84,7 @@ const Footer = styled.div``;
 
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const { username, setUsername } = useUser();
+  const { user, setUser, setSelectedVideoId } = useContext(appContext);
   const [localUsername, setLocalUsername] = useState('');
   const [showUploadForm, setShowUploadForm] = useState(false);
   const ref = useRef(null);
@@ -112,11 +94,13 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setUsername(localUsername);
+    setSelectedVideoId(null);
+    setUser({ user_id: localUsername });
   };
 
   const handleLogoClick = () => {
-    setUsername('john_smith');
+    setUser({ user_id: 'test_guy' });
+    setSelectedVideoId(null);
     setLocalUsername('');
   };
 
@@ -131,13 +115,19 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           <LogoImage onClick={handleLogoClick} src="/FULL_LOGO_COLOR.png" alt="Full Logo Color" />
         </ReturnToHomePage>
         <Search onSubmit={handleSearchSubmit}>
-          <InputButton type="submit">
+          <Button type="submit"
+            style={{
+              backgroundColor: colors.primarys0l15,
+            }}>
             <SearchIcon fill='white' height={"20px"} />
-          </InputButton>
-          <InputName
+          </Button>
+          <Input
             placeholder="Search username"
             value={localUsername}
             onChange={(e) => setLocalUsername(e.target.value)}
+            style={{
+              border: "none",
+            }}
           />
         </Search>
         <UploadVideo ref={ref}>
@@ -146,7 +136,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </UploadVideo>
       </StyleHeader>
       <CurrentUsername>
-        You watching {username}
+        You watching {user.user_id}
       </CurrentUsername>
       <MainContent>
         {children}

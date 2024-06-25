@@ -1,18 +1,22 @@
-// src/components/layout/UploadVideoForm.tsx
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { borderRadius, colors } from '@_constants/index';
 
-import { createVideo, getSingleVideo } from '@_services/videosService';
+import { createVideo } from '@_services/videosService';
 import { validateUserId, validateStringNotEmpty, validateUrl } from '@_validators/index';
-import { useUser } from '@_context/index';
+import { appContext } from '@_context/context';
+import { Button } from '@_components/button';
+import { Input } from '@_components/input';
 
 // Styles
 const UploadFormContainer = styled.div`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
   right: 10%;
   background-color: ${colors.primarys0l25};
-  padding: 10px 20px;
+  padding: 10px;
   border-radius: ${borderRadius}px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -29,33 +33,7 @@ const Header = styled.form`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-`;
-
-const Input = styled.input`
-  margin-bottom: 10px;
-  padding: 8px;
-  background-color: transparent;
-  color: ${colors.white};
-  border: 1px solid ${colors.primarys0l15};
-  border-radius: ${borderRadius}px;
-
-  &::placeholder {
-    color: ${colors.white};
-    opacity: 0.7;
-  }
-`;
-
-const SubmitButton = styled.button`
-  background-color: ${colors.primarys0l15};
-  color: ${colors.white};
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: ${borderRadius}px;
-
-  &:hover {
-    background-color: ${colors.primarys0l25};
-  }
+  gap: 6px;
 `;
 
 const ErrorText = styled.div`
@@ -67,9 +45,9 @@ interface UploadVideoFormProps {
 }
 
 export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => {
-  const { username } = useUser();
+  const { user, setIsNewVideoUploaded } = useContext(appContext);
 
-  const [user_id, setUserId] = useState('');
+  const [user_id, setUserId] = useState(user.user_id);
   const [video_url, setVideoUrl] = useState('');
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
@@ -95,12 +73,8 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
       return;
     }
     try {
+      setIsNewVideoUploaded(true);
       await createVideo({ user_id, description, video_url, title });
-      console.log('Video created successfully:');
-      if (username === user_id) {
-        const svideo = await getSingleVideo(video_url)
-        //fix Later add to list singleVideo
-      }
       onClose();
     } catch (error) {
       console.error('Failed to create video:', error);
@@ -120,22 +94,19 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
         <Input
           type="text"
           placeholder="Video URL"
-          value={video_url}
           onChange={(e) => setVideoUrl(e.target.value)}
         />
         <Input
           type="text"
           placeholder="Title"
-          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <Input
           type="text"
           placeholder="Description"
-          value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <SubmitButton type="submit">Upload</SubmitButton>
+        <Button type="submit">Upload</Button>
         {error && <ErrorText>{error}</ErrorText>}
       </Form>
     </UploadFormContainer>
