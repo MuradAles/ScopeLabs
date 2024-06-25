@@ -25,7 +25,7 @@ const VideoScreen = styled.div`
   height: 100vh;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 999;
 `;
 
 const VideoError = styled.div`
@@ -80,11 +80,11 @@ const Controls = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
-  padding: 10px 10px 10px;
+  padding: 10px 10px;
   width: 100%;
-  bottom: 0%;
+  bottom: 0;
   z-index: 1000;
-  transition: opacity 0.5s;
+  transition: opacity 1s;
   opacity: ${props => (props.$visible ? 1 : 0)};
 `;
 
@@ -126,9 +126,6 @@ const ControlButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  &:hover {
-    background-color: ${colors.primarys0l25};
-  }
 `;
 
 export const VideoDetails: React.FC = () => {
@@ -152,6 +149,19 @@ export const VideoDetails: React.FC = () => {
   const [controlsVisible, setControlsVisible] = useState(true);
   const [hovering, setHovering] = useState(false);
   const timerRef = useRef<number | null>(null);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -281,11 +291,14 @@ export const VideoDetails: React.FC = () => {
                 height="100%"
                 onProgress={(progress) => setCurrentTime(progress.playedSeconds)}
                 onDuration={(duration) => setDuration(duration)}
-                style={{ position: 'absolute', top: 0, left: 0 }}
+                style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}
               />
               <Controls $visible={controlsVisible}
                 onMouseLeave={() => setHovering(false)}
-                onMouseEnter={() => setHovering(true)}>
+                onMouseEnter={() => setHovering(true)}
+                onTouchStart={() => setHovering(true)}
+                onTouchEnd={() => setHovering(false)}
+              >
                 <ControlButton onClick={handlePlayPause}>
                   {playing ? <PauseIcon width={15} fill={colors.white} /> : <PlayIcon width={15} fill={colors.white} />}
                 </ControlButton>
@@ -297,9 +310,11 @@ export const VideoDetails: React.FC = () => {
                     step={0.1}
                     value={currentTime}
                     onChange={handleSeek}
-                    style={{ width: 'calc(100% - 500px)' }}
+                    style={{ width: '30vw' }}
                   />
-                  <Text style={{ color: colors.white }}>{formatTime(currentTime)} / {formatTime(duration)}</Text>
+                  {screenWidth > 600 && (
+                    <Text style={{ color: colors.white }}>{formatTime(currentTime)} / {formatTime(duration)}</Text>
+                  )}
                 </>
                 <input
                   type="range"
@@ -308,7 +323,7 @@ export const VideoDetails: React.FC = () => {
                   step="0.01"
                   value={volume}
                   onChange={handleVolumeChange}
-                  style={{ width: '100px' }}
+                  style={{ width: '10vw' }}
                 />
                 <SpeedControl>
                   <Select
@@ -352,7 +367,7 @@ export const VideoDetails: React.FC = () => {
           ) : (
             <>
               <TitleRow>
-                <Title>{singleVideo.title}</Title>
+                <Title style={{ display: "flex", maxHeight: "none" }}>{singleVideo.title}</Title>
                 <Text>{formatDateDistance(singleVideo.created_at)}</Text>
               </TitleRow>
               <Text>{singleVideo.description}</Text>
