@@ -34,6 +34,7 @@ const VideoError = styled.div`
 
 const VideoErrorImage = styled.img`
   width: 100%;
+  max-height: 600px;
   height: auto;
   border-radius: ${borderRadius}px;
   overflow: hidden;
@@ -44,7 +45,7 @@ const VideoErrorText = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1.5rem;
+  font-size: 1rem;
   padding: 5px;
   background-color: ${colors.primarys0l15};
   border-radius: ${borderRadius}px;
@@ -376,7 +377,7 @@ export const VideoDetails: React.FC = () => {
           )}
         </VideoDescription>
         <Text style={{ color: colors.white, width: "100%", margin: "10px 0" }}>
-          {singleVideo.num_comments} : comments
+          {singleVideo.num_comments} comments
         </Text>
         <VideoComments />
       </VideoDetailsContent>
