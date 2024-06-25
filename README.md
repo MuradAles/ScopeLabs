@@ -59,12 +59,30 @@ The project aims to develop a video management application using Vite, React wit
     - Comments, Title, Description: Must have a minimum length of 1 character.
     - Video URL: Must be a valid link.
 
-## Project Overview
+## Project Screenshots
+1. **HomePage**
+    - User can look at list of videos and allowed to select a video from the list.
+    
 ![HomePage](https://github.com/MuradAles/ScopeLabs/assets/53098880/e138fbc0-2232-49e3-ab4a-592444beace2)
+
+    - User allowed to create a new video object with a title, description and video Url
+    
 ![UploadVideo](https://github.com/MuradAles/ScopeLabs/assets/53098880/8bbc8639-98d2-4f74-a3f3-605bb375710b)
+    
+    - User can search for videos based on user_id.
+    
 ![SearchUser](https://github.com/MuradAles/ScopeLabs/assets/53098880/759cfde6-5c59-4c7d-b799-6b6c05119816)
+
+    - This is a single video component
+    
 ![SignleVideo](https://github.com/MuradAles/ScopeLabs/assets/53098880/bfe8aab4-895c-4696-971a-4c59a7999e4a)
+
+    - User allowed to edit to the video
+    
 ![EditVideo](https://github.com/MuradAles/ScopeLabs/assets/53098880/e5dd3d11-32ff-4b3b-9558-55c20213653e)
+
+    - User allowed to edit to the video
+    
 ![AddComment](https://github.com/MuradAles/ScopeLabs/assets/53098880/02caf8bd-6b81-4de4-afaa-675017a88720)
 
 ## Getting Started
