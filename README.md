@@ -108,11 +108,11 @@ The project aims to develop a video management application using Vite and React 
   - yarn install
 
 3. **Get Access from Cors (temporary)**
- - follow the link and 'Request temporary access to the demo serve', you will get access to Cors
+ - follow the link and 'Request temporary access to the demo serve', and you will get access to Cors
  - https://cors-anywhere.herokuapp.com/corsdemo
 
 
-### Build and Run
+## Build and Run
 3. **Run the Development Server**
 <br>To start the development server, run:
   - npm run dev
