@@ -360,7 +360,7 @@ export const VideoDetails: React.FC = () => {
             </>
           )}
         </VideoDescription>
-        <Text style={{ color: colors.white, width: "100%" }}>
+        <Text style={{ color: colors.white, width: "100%", margin: "10px 0" }}>
           {singleVideo.num_comments} : comments
         </Text>
         <VideoComments />
