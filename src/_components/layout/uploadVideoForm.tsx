@@ -53,7 +53,11 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
 
-
+  /**
+   * Handles form submission for uploading a new video.
+   * 
+   * @param e - The form event object.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateUserId(user_id)) {

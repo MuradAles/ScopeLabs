@@ -6,6 +6,16 @@ const BASE_URL = 'https://cors-anywhere.herokuapp.com/take-home-assessment-42350
 
 import { CreateVideoParams, EditVideoParams, CreateCommentParams } from '@_interfaces/index';
 
+/**
+ * Creates a new video.
+ * 
+ * @param user_id - The ID of the user creating the video.
+ * @param description - The description of the video.
+ * @param video_url - The URL of the video.
+ * @param title - The title of the video.
+ * 
+ * @returns The newly created video.
+ */
 export const createVideo = async ({ user_id, description, video_url, title }: CreateVideoParams) => {
   try {
     const response = await fetch(BASE_URL, {
@@ -32,6 +42,13 @@ export const createVideo = async ({ user_id, description, video_url, title }: Cr
   }
 };
 
+/**
+ * Fetches videos of a specific user.
+ * 
+ * @param user_id - The ID of the user whose videos are to be fetched.
+ * 
+ * @returns A list of videos for the specified user.
+ */
 export const getUserVideos = async (user_id: string) => {
   try {
     const response = await fetch(`${BASE_URL}?user_id=${user_id}`, {
@@ -52,6 +69,15 @@ export const getUserVideos = async (user_id: string) => {
   }
 };
 
+/**
+ * Edits an existing video.
+ * 
+ * @param video_id - The ID of the video to be edited.
+ * @param title - The new title of the video.
+ * @param description - The new description of the video.
+ * 
+ * @returns The edited video.
+ */
 export const editVideo = async ({ video_id, title, description }: EditVideoParams) => {
   try {
     const response = await fetch(BASE_URL, {
@@ -76,6 +102,13 @@ export const editVideo = async ({ video_id, title, description }: EditVideoParam
   }
 };
 
+/**
+ * Fetches a single video by its ID.
+ * 
+ * @param video_id - The ID of the video to be fetched.
+ * 
+ * @returns The fetched video.
+ */
 export const getSingleVideo = async (video_id: string) => {
   try {
     const response = await fetch(`${BASE_URL}/single?video_id=${video_id}`, {
@@ -95,6 +128,15 @@ export const getSingleVideo = async (video_id: string) => {
   }
 };
 
+/**
+ * Creates a new comment on a video.
+ * 
+ * @param video_id - The ID of the video to be commented on.
+ * @param content - The content of the comment.
+ * @param user_id - The ID of the user creating the comment.
+ * 
+ * @returns The newly created comment.
+ */
 export const createComment = async ({ video_id, content, user_id }: CreateCommentParams) => {
   try {
     const response = await fetch(`${BASE_URL}/comments`, {
@@ -119,6 +161,13 @@ export const createComment = async ({ video_id, content, user_id }: CreateCommen
   }
 };
 
+/**
+ * Fetches comments for a specific video.
+ * 
+ * @param video_id - The ID of the video whose comments are to be fetched.
+ * 
+ * @returns A list of comments for the specified video.
+ */
 export const getVideoComments = async (video_id: string) => {
   try {
     const response = await fetch(`${BASE_URL}/comments?video_id=${video_id}`, {

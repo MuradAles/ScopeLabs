@@ -164,6 +164,9 @@ export const VideoDetails: React.FC = () => {
   const timerRef = useRef<number | null>(null);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
+  /**
+   * Effect to update screenWidth state on window resize.
+   */
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
@@ -176,6 +179,9 @@ export const VideoDetails: React.FC = () => {
     };
   }, []);
 
+  /**
+   * Effect to handle changes in fullscreen mode and update state accordingly.
+   */
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -188,6 +194,9 @@ export const VideoDetails: React.FC = () => {
     };
   }, []);
 
+  /**
+   * Effect to handle showing and hiding video controls based on mouse hover.
+   */
   useEffect(() => {
     if (hovering) {
       setControlsVisible(true);
@@ -206,6 +215,9 @@ export const VideoDetails: React.FC = () => {
     };
   }, [hovering]);
 
+  /**
+   * Function to enter edit mode for the video details.
+   */
   const handleEdit = () => {
     if (singleVideo) {
       setEditing(true);
@@ -214,6 +226,9 @@ export const VideoDetails: React.FC = () => {
     }
   };
 
+  /**
+   * Function to save changes made to the video details.
+   */
   const handleSaveChanges = async () => {
     if (!singleVideo) {
       return;

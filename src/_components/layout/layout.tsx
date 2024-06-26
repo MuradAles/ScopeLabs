@@ -84,26 +84,37 @@ const Footer = styled.div``;
 
 
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const { user, setUser, setSelectedVideoId } = useContext(appContext) as AppContextInterface;
-  const [localUsername, setLocalUsername] = useState('');
-  const [showUploadForm, setShowUploadForm] = useState(false);
-  const ref = useRef(null);
-  useClickAway(ref, () => {
-    setShowUploadForm(false)
+  const { user, setUser, setSelectedVideoId } = useContext(appContext) as AppContextInterface; // Accessing user state and setter functions from app context.
+  const [localUsername, setLocalUsername] = useState(''); // Local state for storing temporary username input.
+  const [showUploadForm, setShowUploadForm] = useState(false); // State for toggling visibility of the upload form.
+  const ref = useRef(null); // Ref for detecting clicks outside a component using useClickAway hook.
+  useClickAway(ref, () => { // Hook to close upload form when clicked outside.
+    setShowUploadForm(false);
   });
 
+  /**
+   * Handles form submission for searching videos by username.
+   * 
+   * @param e - The form event object.
+   */
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSelectedVideoId(null);
     setUser({ user_id: localUsername });
   };
 
+  /**
+   * Handles click event when logo is clicked, resetting user state and selected video ID.
+   */
   const handleLogoClick = () => {
     setUser({ user_id: 'murad_aleskerov' });
     setSelectedVideoId(null);
     setLocalUsername('');
   };
 
+  /**
+   * Toggles visibility of the upload form.
+   */
   const toggleUploadForm = () => {
     setShowUploadForm(!showUploadForm);
   };

@@ -49,6 +49,11 @@ export const VideoComments = () => {
   const [userComment, setUserComment] = useState<string>('');
   const [error, setError] = useState('');
 
+  /**
+   * Function to handle form submission for creating a new comment.
+   * 
+   * @param e - The form submission event object.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     if (!singleVideo) {
       return;

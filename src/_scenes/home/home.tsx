@@ -44,10 +44,18 @@ export const Home = () => {
     setSingleVideo,
   } = useContext(appContext) as AppContextInterface;
 
+  /**
+   * Function to handle selecting a video and setting its ID as the selectedVideoId.
+   * 
+   * @param video - The video object to be selected.
+   */
   const selectVideoDetails = (video: VideoParams) => {
     setSelectedVideoId(video.id);
   };
 
+  /**
+   * Effect to reset the single video details when selectedVideoId changes.
+   */
   useEffect(() => {
     if (!selectedVideoId) {
       setSingleVideo(null);
