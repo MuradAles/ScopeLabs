@@ -4,14 +4,14 @@ import { Home } from '@_scenes/index';
 import { Route, Routes } from 'react-router-dom';
 import { StyleSheetManager } from 'styled-components';
 import { AppContextProvider } from '@_provider/provider';
-import AnimatedBackgroundComponent from '@_components/animatedBackground/animatedBackground';
+import { AnimatedGradientBackground } from '@_components/animatedBackground/animatedBackground';
 
 export const App: React.FC = () => {
   return (
     <AppContextProvider>
       <StyleSheetManager>
         <GlobalStyle />
-        <AnimatedBackgroundComponent />
+        <AnimatedGradientBackground />
         <Routes>
           <Route path='/' element={<Home />} />
         </Routes>
@@ -19,3 +19,4 @@ export const App: React.FC = () => {
     </AppContextProvider>
   );
 };
+

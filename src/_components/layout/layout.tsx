@@ -10,17 +10,21 @@ import { UploadVideoForm } from '@_components/uploadVideoForm';
 import { SearchButton } from '@_components/button';
 import { Input } from '@_components/input';
 import { HoverTooltip } from '@_components/hoverTooltip';
-import { Title } from '@_components/text';
+import { ExternalLink, Text, Title } from '@_components/text';
+import { BehindLogo } from '@_assets/icons/behindLogo';
+import { Emanon } from '@_assets/icons/emanon';
+import { MyLogo } from '@_assets/icons/myLogo';
+import { SomeoneLogo } from '@_assets/icons/someoneLogo';
 
 // Styles
 const StyleHeader = styled.div`
   position: sticky;
   top: 0;
-  z-index: 10000;
+  z-index: 2;
   height: 100px;
-  padding:1rem;
+  padding: 1rem;
   background-color: ${colors.primarys0l15t95};
-  display:grid;
+  display: grid;
   align-items: center;
   justify-content: center;
   grid-template-columns: 1fr 5fr 1fr;
@@ -71,11 +75,42 @@ const UploadVideo = styled.div`
 `;
 
 const CurrentUsername = styled.div`
+  width: 100%;
   display:flex;
+  flex-direction: column;
   align-items:center;
+  justify-content: center;
   font-size: 1.5rem;
-  margin-top: 10px;
-  margin-left: 25px;
+  border-radius: ${borderRadius}px;
+  `;
+
+const BackLogo = styled.div`
+  display:flex;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  background-color: #15122cbb;
+  border-radius: ${borderRadius}px;
+`;
+
+const AccountInformation = styled.div`
+  background-color: ${colors.primarys0l5};
+  display: flex;
+  width: 100%;
+  padding: 0 3%;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid ${colors.white};
+  position: sticky;
+  top: 0;
+  z-index: 1;
+`;
+
+
+const UserDescription = styled.div`
+  display: flex;
+  flex-direction:column;
+  width: 100%;
 `;
 
 const MainContent = styled.div`
@@ -153,9 +188,52 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </UploadVideo>
       </StyleHeader>
       <CurrentUsername>
-        <Title>
-          You watching {user.user_id}
-        </Title>
+        {user.user_id !== "murad_aleskerov" ? (
+          <BackLogo>
+            <Emanon height="11rem" />
+          </BackLogo>
+        ) : (
+          <BackLogo>
+            <BehindLogo height="11rem" />
+          </BackLogo>
+        )}
+        <AccountInformation>
+          {user.user_id !== "murad_aleskerov" ? (
+            <SomeoneLogo height="10rem" />
+          ) : (
+            <MyLogo height="10rem" />
+          )}
+          <UserDescription>
+            <Title>
+              {user.user_id}
+            </Title>
+            {user.user_id !== "murad_aleskerov" ? (
+              <>
+                <Text>
+                  Not a Full Stack Developer
+                </Text>
+                <ExternalLink href="https://www.linkedin.com">
+                  https://www.linkedin.com
+                </ExternalLink>
+                <ExternalLink href="https://github.com">
+                  https://github.com
+                </ExternalLink>
+              </>
+            ) : (
+              <>
+                <Text>
+                  A Full Stack Developer
+                </Text>
+                <ExternalLink href="https://www.linkedin.com/in/murad-aleskerov/">
+                  linkedin.com/in/murad-aleskerov/
+                </ExternalLink>
+                <ExternalLink href="https://github.com/MuradAles/ScopeLabs">
+                  github.com/MuradAles/ScopeLabs
+                </ExternalLink>
+              </>
+            )}
+          </UserDescription>
+        </AccountInformation>
       </CurrentUsername>
       <MainContent>
         {children}

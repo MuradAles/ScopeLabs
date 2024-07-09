@@ -2,8 +2,8 @@ import { colors } from "@_constants/styleConstants";
 import styled from "styled-components";
 
 export const Title = styled.span`
-  max-width: 80%;
-  font-size: 1.2em;
+  max-width: 100%;
+  font-size: 1.1em;
   font-weight: 700;
   overflow: hidden;
   display: -webkit-box;
@@ -22,6 +22,13 @@ export const Text = styled.span`
   color: ${colors.text};
   word-break: break-word;
   font-size: 0.9rem;
+`;
+
+export const ExternalLink = styled.a`
+  font-size: 0.9rem;
+  color: #a8a8ff;
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 export const ErrorText = styled.div`

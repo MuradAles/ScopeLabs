@@ -11,6 +11,10 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     background-color: ${colors.primary};
     color: ${colors.white};
+    margin: 0 5%;
+    @media (max-width: 600px){
+      margin: 0;
+    }
   }
 
   ::-webkit-scrollbar {

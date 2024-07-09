@@ -24,6 +24,9 @@ const UploadFormContainer = styled.div<{ show: boolean }>`
   transform: translateX(${props => (props.show ? '0%' : '100%')});
   opacity: ${props => (props.show ? 1 : 0)};
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  @media (max-width: 600px) {
+    width: 23.5rem;
+  }
 `;
 
 const Header = styled.form`

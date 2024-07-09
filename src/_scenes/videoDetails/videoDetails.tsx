@@ -417,7 +417,7 @@ export const VideoDetails: React.FC = () => {
         style={{
           position: 'absolute',
           zIndex: 1,
-          top: "5%",
+          top: "2.8%",
           left: "2%",
           width: "2.5rem",
           height: "2.5rem",
