@@ -6,7 +6,7 @@ import { createComment } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/utilities';
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { validateStringNotEmpty, validateUserId } from '@_validators/videoValidators';
+import { validateStringNotEmpty } from '@_validators/videoValidators';
 
 
 const Comments = styled.div`
@@ -40,12 +40,12 @@ const CommentHeader = styled.div`
 
 export const VideoComments = () => {
   const {
+    accountUser,
     singleVideo,
     videoComments,
     setIsVideoUpdated,
     setIsCommentCreated,
   } = useContext(appContext) as AppContextInterface;
-  const [userId, setUserId] = useState<string>('');
   const [userComment, setUserComment] = useState<string>('');
   const [error, setError] = useState('');
 
@@ -59,10 +59,6 @@ export const VideoComments = () => {
       return;
     }
     e.preventDefault();
-    if (!validateUserId(userId)) {
-      setError('Invalid User ID');
-      return;
-    }
     if (!validateStringNotEmpty(userComment)) {
       setError('Comment cannot be empty');
       return;
@@ -71,13 +67,12 @@ export const VideoComments = () => {
       const newComment = await createComment({
         video_id: singleVideo.id,
         content: userComment,
-        user_id: userId,
+        user_id: accountUser.user_id,
       });
       if (newComment) {
         setIsVideoUpdated(true);
         setIsCommentCreated(true);
         setUserComment('');
-        setUserId('');
         setError('');
       }
     } catch (error) {
@@ -91,12 +86,6 @@ export const VideoComments = () => {
   return (
     <Comments>
       <CreateComment onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          placeholder="User ID"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-        />
         <Input
           type="text"
           placeholder="Comment"

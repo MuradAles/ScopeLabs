@@ -7,9 +7,10 @@ import { Link } from 'react-router-dom';
 import { SearchIcon } from '@_assets/icons/search';
 import { AppContextInterface, appContext } from '@_context/index';
 import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
-import { UploadVideoForm } from '@_components/layout/index';
+import { UploadVideoForm } from '@_components/uploadVideoForm';
 import { Button } from '@_components/button';
 import { Input } from '@_components/input';
+import { HoverTooltip } from '@_components/hoverTooltip/hoverTooltip';
 
 // Styles
 const StyleHeader = styled.div`
@@ -34,6 +35,7 @@ const ReturnToHomePage = styled(Link)`
   display: flex;
   flex-direction: column;
   border-radius: 5px;
+  position: relative;
 `;
 
 const LogoImage = styled.img`
@@ -123,14 +125,18 @@ export const Layout = ({ children }: { children: ReactNode }) => {
     <>
       <StyleHeader>
         <ReturnToHomePage to="/">
-          <LogoImage onClick={handleLogoClick} src="/FULL_LOGO_COLOR.png" alt="Full Logo Color" />
+          <HoverTooltip tooltipContent="Return to Home">
+            <LogoImage onClick={handleLogoClick} src="/FULL_LOGO_COLOR.png" alt="Full Logo Color" />
+          </HoverTooltip>
         </ReturnToHomePage>
         <Search onSubmit={handleSearchSubmit}>
           <Button type="submit"
             style={{
               backgroundColor: colors.primarys0l15,
             }}>
-            <SearchIcon fill='white' height={"20px"} />
+            <HoverTooltip tooltipContent="Search Users">
+              <SearchIcon fill='white' height={"20px"} />
+            </HoverTooltip>
           </Button>
           <Input
             placeholder="Search username"
@@ -142,7 +148,9 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           />
         </Search>
         <UploadVideo ref={ref}>
-          <UploadVideoIcon fill='white' height={"30px"} onClick={toggleUploadForm} />
+          <HoverTooltip tooltipContent="Upload Video">
+            <UploadVideoIcon fill='white' height={"30px"} onClick={toggleUploadForm} />
+          </HoverTooltip>
           {showUploadForm && <UploadVideoForm onClose={toggleUploadForm} />}
         </UploadVideo>
       </StyleHeader>

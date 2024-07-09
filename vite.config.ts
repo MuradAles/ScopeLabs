@@ -13,6 +13,7 @@ export default defineConfig({
       '@_context': path.resolve(__dirname, 'src/_context/'),
       '@_interfaces': path.resolve(__dirname, 'src/_interfaces/'),
       '@_utilities': path.resolve(__dirname, 'src/_utilities/'),
+      '@_provider': path.resolve(__dirname, 'src/_provider/'),
       '@_scenes': path.resolve(__dirname, 'src/_scenes/'),
       '@_services': path.resolve(__dirname, 'src/_services/'),
       '@_validators': path.resolve(__dirname, 'src/_validators/'),

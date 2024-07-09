@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { borderRadius, colors } from '@_constants/index';
 
 import { createVideo } from '@_services/videosService';
-import { validateUserId, validateStringNotEmpty, validateUrl } from '@_validators/index';
+import { validateStringNotEmpty, validateUrl } from '@_validators/index';
 import { AppContextInterface, appContext } from '@_context/context';
 import { Button } from '@_components/button';
 import { Input } from '@_components/input';
@@ -45,9 +45,9 @@ interface UploadVideoFormProps {
 }
 
 export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => {
-  const { user, setIsNewVideoUploaded } = useContext(appContext) as AppContextInterface;
+  const { accountUser, setIsNewVideoUploaded } = useContext(appContext) as AppContextInterface;
 
-  const [user_id, setUserId] = useState(user.user_id);
+  const user_id = accountUser.user_id;
   const [video_url, setVideoUrl] = useState('');
   const [description, setDescription] = useState('');
   const [title, setTitle] = useState('');
@@ -60,10 +60,6 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateUserId(user_id)) {
-      setError('Invalid user ID. Must be snake_case lowercase.');
-      return;
-    }
     if (!validateUrl(video_url)) {
       setError('Invalid video URL.');
       return;
@@ -89,12 +85,6 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
     <UploadFormContainer>
       <Header>Upload Video</Header>
       <Form onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          placeholder="User ID"
-          value={user_id}
-          onChange={(e) => setUserId(e.target.value)}
-        />
         <Input
           type="text"
           placeholder="Video URL"

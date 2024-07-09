@@ -41,6 +41,9 @@
       "@_utilities/*": [
         "src/_utilities/*"
       ],
+      "@_provider/*": [
+        "src/_provider/*"
+      ],
       "@_scenes/*": [
         "src/_scenes/*"
       ],

@@ -2,6 +2,7 @@ import { createContext, Dispatch, SetStateAction } from "react";
 import { CommentParams, User, VideoParams } from "@_interfaces/index";
 
 export interface AppContextInterface {
+  accountUser: User;
   user: User;
   setUser: Dispatch<SetStateAction<User>>;
   videos: VideoParams[];
