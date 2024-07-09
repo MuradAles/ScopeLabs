@@ -8,7 +8,7 @@ import { AppContextInterface, appContext } from '@_context/index';
 import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
 import { UploadVideoForm } from '@_components/uploadVideoForm';
 import { SearchButton } from '@_components/button';
-import { InputTextArea } from '@_components/input';
+import { Input } from '@_components/input';
 import { HoverTooltip } from '@_components/hoverTooltip';
 import { Title } from '@_components/text';
 
@@ -19,7 +19,7 @@ const StyleHeader = styled.div`
   z-index: 10000;
   height: 100px;
   padding:1rem;
-  background-color: ${colors.primarys0l15};
+  background-color: ${colors.primarys0l15t95};
   display:grid;
   align-items: center;
   justify-content: center;
@@ -135,7 +135,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
               <SearchIcon fill='white' height={"20px"} />
             </HoverTooltip>
           </SearchButton>
-          <InputTextArea
+          <Input
             id="search"
             placeholder="Search username"
             value={localUsername}

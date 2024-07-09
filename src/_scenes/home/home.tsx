@@ -13,6 +13,9 @@ const Videos = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  @media (max-width: 600px){
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const Video = styled.div`
@@ -64,26 +67,24 @@ export const Home = () => {
 
   return (
     <Layout>
-      <>
-        <Videos>
-          {videos.length > 0 ? (
-            videos.map((video: VideoParams) => (
-              <Video key={video.id} onClick={() => selectVideoDetails(video)}>
-                {video.thumbnail_url ? (
-                  <VideoImage src={video.thumbnail_url} alt={video.title} />
-                ) : (
-                  <VideoImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
-                )}
-                <Title>{video.title}</Title>
-                <Text>{formatDateDistance(video.created_at)}</Text>
-                <Text>Comments: {video.num_comments}</Text>
-              </Video>
-            ))
-          ) : (
-            <Text>No videos found.</Text>
-          )}
-        </Videos>
-      </>
+      <Videos>
+        {videos.length > 0 ? (
+          videos.map((video: VideoParams) => (
+            <Video key={video.id} onClick={() => selectVideoDetails(video)}>
+              {video.thumbnail_url ? (
+                <VideoImage src={video.thumbnail_url} alt={video.title} />
+              ) : (
+                <VideoImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
+              )}
+              <Title>{video.title}</Title>
+              <Text>{formatDateDistance(video.created_at)}</Text>
+              <Text>Comments: {video.num_comments}</Text>
+            </Video>
+          ))
+        ) : (
+          <Text>No videos found.</Text>
+        )}
+      </Videos>
       {selectedVideoId && <VideoDetails />}
     </Layout>
   );

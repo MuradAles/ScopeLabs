@@ -1,4 +1,4 @@
-import { Button, InputTextArea, Text, ErrorText } from '@_components/index';
+import { Button, TextArea, Text, ErrorText } from '@_components/index';
 import { AppContextInterface, appContext } from '@_context/context';
 import { editVideo } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/index';
@@ -229,6 +229,11 @@ const SpeedOption = styled.div`
   }
 `;
 
+const ButtonSection = styled.div`
+  display:flex;
+  gap: 10px;
+`;
+
 export const VideoDetails: React.FC = () => {
   const {
     singleVideo,
@@ -305,6 +310,12 @@ export const VideoDetails: React.FC = () => {
       setNewDescription(singleVideo.description);
     }
   };
+  const handleCancelEdit = () => {
+    setEditing(false);
+    setNewTitle(singleVideo?.title || '');
+    setNewDescription(singleVideo?.description || '');
+    setError('');
+  };
 
   /**
    * Function to save changes made to the video details.
@@ -335,6 +346,7 @@ export const VideoDetails: React.FC = () => {
       console.error('Failed to update video:', error);
     }
   };
+
 
   /**
    * Video Controls Functions
@@ -467,7 +479,7 @@ export const VideoDetails: React.FC = () => {
                     value={volume}
                     onChange={handleVolumeChange}
                   />
-                  <Text style={{ color: colors.white }}>{formatTime(currentTime)} / {formatTime(duration)}</Text>
+                  <Text style={{ color: colors.white, fontSize: "0.75rem" }}>{formatTime(currentTime)} / {formatTime(duration)}</Text>
                 </LeftControls>
                 <RightControls>
                   <SpeedControl>
@@ -501,7 +513,7 @@ export const VideoDetails: React.FC = () => {
           {editing ? (
             <>
               <TitleRow>
-                <InputTextArea
+                <TextArea
                   id="input-video-title"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
@@ -510,20 +522,23 @@ export const VideoDetails: React.FC = () => {
                 <Text>{formatDateDistance(singleVideo.created_at)}</Text>
               </TitleRow>
               <DescriptionRow>
-                <InputTextArea
+                <TextArea
                   id="input-video-description"
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
                   style={{ color: colors.text }}
                 />
-                <Button onClick={handleSaveChanges}>Save</Button>
+                <ButtonSection>
+                  <Button onClick={handleCancelEdit}>Cancel</Button>
+                  <Button onClick={handleSaveChanges}>Save</Button>
+                </ButtonSection>
               </DescriptionRow>
               {error && <ErrorText>{error}</ErrorText>}
             </>
           ) : (
             <>
               <TitleRow>
-                <InputTextArea
+                <TextArea
                   id="input-video-title"
                   readOnly
                   value={singleVideo.title}
@@ -532,7 +547,7 @@ export const VideoDetails: React.FC = () => {
                 <Text>{formatDateDistance(singleVideo.created_at)}</Text>
               </TitleRow>
               <DescriptionRow>
-                <InputTextArea
+                <TextArea
                   id="input-video-description"
                   readOnly
                   value={singleVideo.description}

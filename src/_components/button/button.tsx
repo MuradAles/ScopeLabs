@@ -25,7 +25,7 @@ export const Button = styled.button`
 `;
 
 export const SearchButton = styled.button`
-  background-color: ${colors.primarys0l15};
+  background-color: transparent;
   border: none;
   color: white;
   border-radius: ${borderRadius}px;

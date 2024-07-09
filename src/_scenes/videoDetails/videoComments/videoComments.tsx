@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { AppContextInterface, appContext } from '@_context/context';
-import { Button, ErrorText, InputTextArea, Text, Title } from '@_components/index';
+import { Button, ErrorText, TextArea, Text, Title } from '@_components/index';
 import { CommentParams } from '@_interfaces/types';
 import { colors, borderRadius } from '@_constants/styleConstants';
 import { createComment } from '@_services/videosService';
@@ -29,8 +29,8 @@ const CreateComment = styled.form<{ isExpanded: boolean }>`
   background-color: ${colors.primarys0l15};
   border-radius: ${borderRadius}px;
   padding: 6px;
-  height: ${props => (props.isExpanded ? '4rem' : '2.3rem')};
-  transition: height 0.5s ease-in-out;
+  min-height: ${props => (props.isExpanded ? '4rem' : '2.3rem')};
+  transition: min-height 0.5s ease-in-out;
   position: relative;
 `;
 
@@ -50,7 +50,7 @@ const CommentHeader = styled.div`
 const ButtonsContainer = styled.div`
   position: absolute;
   right: 1rem;
-  bottom: 2px;
+  bottom: 4px;
   display: flex;
   justify-content: flex-end;
 `;
@@ -86,7 +86,7 @@ export const VideoComments = () => {
   const handleCancel = () => {
     setUserComment('');
     setError('');
-    setIsExpanded(false); // Close the comment box on cancel
+    setIsExpanded(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -109,7 +109,7 @@ export const VideoComments = () => {
         setIsCommentCreated(true);
         setUserComment('');
         setError('');
-        setIsExpanded(false); // Close the comment box on successful upload
+        setIsExpanded(false);
       }
     } catch (error) {
       setError('Failed to create comment');
@@ -122,7 +122,7 @@ export const VideoComments = () => {
   return (
     <Comments>
       <CreateComment onSubmit={handleSubmit} isExpanded={isExpanded}>
-        <InputTextArea
+        <TextArea
           id="comment"
           placeholder="Add a comment..."
           value={userComment}

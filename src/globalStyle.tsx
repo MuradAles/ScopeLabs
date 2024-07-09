@@ -12,4 +12,21 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${colors.primary};
     color: ${colors.white};
   }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${colors.primarys0l20};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: ${colors.primarys0l30};
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${colors.primarys0l40};
+  }
 `;
