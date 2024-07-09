@@ -1,4 +1,4 @@
-import { Button, InputVideo, Text, Title, ErrorText } from '@_components/index';
+import { Button, InputTextArea, Text, ErrorText } from '@_components/index';
 import { AppContextInterface, appContext } from '@_context/context';
 import { editVideo } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/index';
@@ -15,7 +15,6 @@ import { validateStringNotEmpty } from '@_validators/videoValidators';
 import { SpeedIcon } from '@_assets/icons/speedIcon';
 import { VolumeOff } from '@_assets/icons/volumeOff';
 import { VolumeOn } from '@_assets/icons/volumeOn';
-
 
 const VideoScreen = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
@@ -59,7 +58,7 @@ const VideoDetailsContent = styled.div`
   position: absolute;
   top: 40px;
   bottom: 100px;
-  background-color: ${colors.primary};
+  background-color: hsla(0, 0%, 10.196078431372548%, 0.95);
   padding: 20px;
   border-radius: ${borderRadius}px;
   width: 90%;
@@ -80,7 +79,7 @@ const VideoPlayer = styled.div`
   width: 100%;
   aspect-ratio: 16/9;
   margin: 5px auto;
-  
+  z-index: 0;
   @media (max-width: 600px) {
    min-height: 300px;
   }
@@ -93,9 +92,10 @@ const Controls = styled.div<{ $visible: boolean }>`
   background-color: #0000008a;
   width: 100%;
   padding: 0 1rem;
-  bottom: 0;
+  bottom: 0px;
   transition: opacity 1s;
   opacity: ${props => (props.$visible ? 1 : 0)}; 
+  z-index: 10;
 `;
 
 const SpeedControl = styled.div`
@@ -119,6 +119,7 @@ const VideoDescription = styled.div`
 
 const TitleRow = styled.div`
   display: flex;
+  justify-content: space-between;
   gap: 10px;
   margin-bottom: 6px;
 `;
@@ -252,6 +253,21 @@ export const VideoDetails: React.FC = () => {
   const timerRef = useRef<number | null>(null);
   const [isSeekBarHovered, setIsSeekBarHovered] = useState(false);
 
+  /** 
+   * Used to resize textarea
+   */
+  useEffect(() => {
+    const resizeTextarea = (id: string) => {
+      const textarea = document.getElementById(id);
+      if (textarea) {
+        textarea.style.height = '1rem';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      }
+    };
+
+    resizeTextarea('input-video-title');
+    resizeTextarea('input-video-description');
+  }, [newTitle, newDescription, singleVideo]);
 
   /**
    * Effect to handle showing and hiding video controls based on mouse hover.
@@ -389,8 +405,12 @@ export const VideoDetails: React.FC = () => {
         style={{
           position: 'absolute',
           zIndex: 1,
-          top: "2.5rem",
-          left: "0.5rem",
+          top: "5%",
+          left: "2%",
+          width: "2.5rem",
+          height: "2.5rem",
+          boxShadow: "0 0 10px 2px rgba(0, 0, 0, 0.5)",
+          padding: 0,
         }}>
         <ReturnIcon width="30px" height="30px" />
       </Button>
@@ -408,7 +428,6 @@ export const VideoDetails: React.FC = () => {
               height="100%"
               onProgress={(progress) => setCurrentTime(progress.playedSeconds)}
               onDuration={(duration) => setDuration(duration)}
-              style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}
             />
             <Controls
               $visible={controlsVisible}
@@ -481,16 +500,21 @@ export const VideoDetails: React.FC = () => {
         <VideoDescription>
           {editing ? (
             <>
-              <InputVideo
-                type="text"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-                style={{ marginBottom: "6px", fontWeight: 700, fontSize: "1.1rem" }}
-              />
+              <TitleRow>
+                <InputTextArea
+                  id="input-video-title"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  style={{ marginBottom: "1px", fontWeight: 800, fontSize: "1.1rem" }}
+                />
+                <Text>{formatDateDistance(singleVideo.created_at)}</Text>
+              </TitleRow>
               <DescriptionRow>
-                <InputVideo
+                <InputTextArea
+                  id="input-video-description"
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
+                  style={{ color: colors.text }}
                 />
                 <Button onClick={handleSaveChanges}>Save</Button>
               </DescriptionRow>
@@ -499,12 +523,22 @@ export const VideoDetails: React.FC = () => {
           ) : (
             <>
               <TitleRow>
-                <Title style={{ display: "flex", maxHeight: "none" }}>{singleVideo.title}</Title>
+                <InputTextArea
+                  id="input-video-title"
+                  readOnly
+                  value={singleVideo.title}
+                  style={{ marginBottom: "1px", fontWeight: 800, fontSize: "1.1rem", boxShadow: "none", resize: "none" }}
+                />
                 <Text>{formatDateDistance(singleVideo.created_at)}</Text>
               </TitleRow>
               <DescriptionRow>
-                <Text>{singleVideo.description}</Text>
-                <Button style={{ height: "2rem" }} onClick={handleEdit}>Edit</Button>
+                <InputTextArea
+                  id="input-video-description"
+                  readOnly
+                  value={singleVideo.description}
+                  style={{ boxShadow: "none", resize: "none", color: colors.text }}
+                />
+                <Button onClick={handleEdit}>Edit</Button>
               </DescriptionRow>
             </>
           )}

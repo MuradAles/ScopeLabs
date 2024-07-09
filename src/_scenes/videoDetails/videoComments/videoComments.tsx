@@ -1,33 +1,42 @@
+import React, { useContext, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import { AppContextInterface, appContext } from '@_context/context';
-import { Button, ErrorText, Input, Text, Title } from '@_components/index';
+import { Button, ErrorText, InputTextArea, Text, Title } from '@_components/index';
 import { CommentParams } from '@_interfaces/types';
 import { colors, borderRadius } from '@_constants/styleConstants';
 import { createComment } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/utilities';
-import { useContext, useState } from 'react';
-import styled from 'styled-components';
 import { validateStringNotEmpty } from '@_validators/videoValidators';
 
-
-const Comments = styled.div`
-  display:flex;
-  flex-direction: column;
-  width:100%;
+const slideDown = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 `;
 
-const CreateComment = styled.form`
+const Comments = styled.div`
   display: flex;
   flex-direction: column;
-  background-color:${colors.primarys0l15};
+  width: 100%;
+`;
+
+const CreateComment = styled.form<{ isExpanded: boolean }>`
+  display: flex;
+  flex-direction: column;
+  background-color: ${colors.primarys0l15};
   border-radius: ${borderRadius}px;
   padding: 6px;
-  gap: 6px;
+  height: ${props => (props.isExpanded ? '4rem' : '2.3rem')};
+  transition: height 0.5s ease-in-out;
+  position: relative;
 `;
 
 const Comment = styled.div`
-  display:flex;
-  flex-direction:column;
-  background-color: ${colors.primarys0l15};
+  display: flex;
+  flex-direction: column;
   padding: 6px;
   margin-top: 8px;
   border-radius: ${borderRadius}px;
@@ -36,7 +45,27 @@ const Comment = styled.div`
 const CommentHeader = styled.div`
   display: flex;
   gap: 10px;
-  `;
+`;
+
+const ButtonsContainer = styled.div`
+  position: absolute;
+  right: 1rem;
+  bottom: 2px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const UploadButton = styled(Button)`
+  visibility: visible;
+  animation: ${slideDown} 0.8s ease-in-out;
+  margin-left: 10px;
+`;
+
+const CancelButton = styled(Button)`
+  visibility: visible;
+  animation: ${slideDown} 0.8s ease-in-out;
+  margin-left: 10px;
+`;
 
 export const VideoComments = () => {
   const {
@@ -48,17 +77,23 @@ export const VideoComments = () => {
   } = useContext(appContext) as AppContextInterface;
   const [userComment, setUserComment] = useState<string>('');
   const [error, setError] = useState('');
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  /**
-   * Function to handle form submission for creating a new comment.
-   * 
-   * @param e - The form submission event object.
-   */
+  const handleFocus = () => {
+    setIsExpanded(true);
+  };
+
+  const handleCancel = () => {
+    setUserComment('');
+    setError('');
+    setIsExpanded(false); // Close the comment box on cancel
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!singleVideo) {
       return;
     }
-    e.preventDefault();
     if (!validateStringNotEmpty(userComment)) {
       setError('Comment cannot be empty');
       return;
@@ -74,6 +109,7 @@ export const VideoComments = () => {
         setIsCommentCreated(true);
         setUserComment('');
         setError('');
+        setIsExpanded(false); // Close the comment box on successful upload
       }
     } catch (error) {
       setError('Failed to create comment');
@@ -81,29 +117,38 @@ export const VideoComments = () => {
     }
   };
 
-  if (!videoComments) return null
+  if (!videoComments) return null;
 
   return (
     <Comments>
-      <CreateComment onSubmit={handleSubmit}>
-        <Input
-          type="text"
-          placeholder="Comment"
+      <CreateComment onSubmit={handleSubmit} isExpanded={isExpanded}>
+        <InputTextArea
+          id="comment"
+          placeholder="Add a comment..."
           value={userComment}
           onChange={(e) => setUserComment(e.target.value)}
+          onFocus={handleFocus}
+          style={{ resize: "vertical", width: '100%' }}
         />
-        <Button type="submit">Upload</Button>
-        {error && <ErrorText>{error}</ErrorText>}
+        {isExpanded && (
+          <ButtonsContainer>
+            <CancelButton type="button" onClick={handleCancel}>
+              Cancel
+            </CancelButton>
+            <UploadButton type="submit">Upload</UploadButton>
+          </ButtonsContainer>
+        )}
       </CreateComment>
+      {error && <ErrorText>{error}</ErrorText>}
       {videoComments.map((comment: CommentParams) => (
         <Comment key={comment.id}>
           <CommentHeader>
             <Title>{comment.user_id}</Title>
             <Text>{formatDateDistance(comment.created_at)}</Text>
           </CommentHeader>
-          <Text>{comment.content}</Text >
+          <Text>{comment.content}</Text>
         </Comment>
       ))}
     </Comments>
-  )
-}
+  );
+};

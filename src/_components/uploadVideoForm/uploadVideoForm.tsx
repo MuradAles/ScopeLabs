@@ -6,7 +6,7 @@ import { createVideo } from '@_services/videosService';
 import { validateStringNotEmpty, validateUrl } from '@_validators/index';
 import { AppContextInterface, appContext } from '@_context/context';
 import { Button } from '@_components/button';
-import { Input } from '@_components/input';
+import { InputTextArea } from '@_components/input';
 
 // Styles
 const UploadFormContainer = styled.div`
@@ -85,20 +85,23 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
     <UploadFormContainer>
       <Header>Upload Video</Header>
       <Form onSubmit={handleSubmit}>
-        <Input
-          type="text"
+        <InputTextArea
+          id="video_url"
           placeholder="Video URL"
           onChange={(e) => setVideoUrl(e.target.value)}
+          style={{ resize: "vertical" }}
         />
-        <Input
-          type="text"
+        <InputTextArea
+          id="title"
           placeholder="Title"
           onChange={(e) => setTitle(e.target.value)}
+          style={{ resize: "vertical" }}
         />
-        <Input
-          type="text"
+        <InputTextArea
+          id="description"
           placeholder="Description"
           onChange={(e) => setDescription(e.target.value)}
+          style={{ resize: "vertical" }}
         />
         <Button type="submit">Upload</Button>
         {error && <ErrorText>{error}</ErrorText>}

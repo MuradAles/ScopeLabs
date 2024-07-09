@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { useClickAway } from 'react-use';
 import { borderRadius, colors } from '@_constants/index';
 import { Link } from 'react-router-dom';
-
 import { SearchIcon } from '@_assets/icons/search';
 import { AppContextInterface, appContext } from '@_context/index';
 import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
 import { UploadVideoForm } from '@_components/uploadVideoForm';
-import { Button } from '@_components/button';
-import { Input } from '@_components/input';
-import { HoverTooltip } from '@_components/hoverTooltip/hoverTooltip';
+import { SearchButton } from '@_components/button';
+import { InputTextArea } from '@_components/input';
+import { HoverTooltip } from '@_components/hoverTooltip';
+import { Title } from '@_components/text';
 
 // Styles
 const StyleHeader = styled.div`
@@ -130,20 +130,18 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           </HoverTooltip>
         </ReturnToHomePage>
         <Search onSubmit={handleSearchSubmit}>
-          <Button type="submit"
-            style={{
-              backgroundColor: colors.primarys0l15,
-            }}>
+          <SearchButton type="submit">
             <HoverTooltip tooltipContent="Search Users">
               <SearchIcon fill='white' height={"20px"} />
             </HoverTooltip>
-          </Button>
-          <Input
+          </SearchButton>
+          <InputTextArea
+            id="search"
             placeholder="Search username"
             value={localUsername}
             onChange={(e) => setLocalUsername(e.target.value)}
             style={{
-              border: "none",
+              boxShadow: "none",
             }}
           />
         </Search>
@@ -155,7 +153,9 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </UploadVideo>
       </StyleHeader>
       <CurrentUsername>
-        You watching {user.user_id}
+        <Title>
+          You watching {user.user_id}
+        </Title>
       </CurrentUsername>
       <MainContent>
         {children}
