@@ -26,7 +26,7 @@ const Comments = styled.div`
 const CreateComment = styled.form<{ isExpanded: boolean }>`
   display: flex;
   flex-direction: column;
-  background-color: ${colors.primarys0l15};
+  background-color: ${colors.primary};
   border-radius: ${borderRadius}px;
   padding: 6px;
   min-height: ${props => (props.isExpanded ? '4rem' : '2.3rem')};

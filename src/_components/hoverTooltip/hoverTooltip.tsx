@@ -17,8 +17,8 @@ export const HoverTooltip = styled.div<HoverTooltipProps>`
     left: 50%;
     transform: translateX(-50%);
     padding: 5px 10px;
-    background-color: ${colors.primarys0l25};
-    color: white;
+    background-color: ${colors.primaryLight};
+    color: ${colors.text};
     border-radius: 5px;
     white-space: nowrap;
     opacity: 1;

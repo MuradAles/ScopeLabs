@@ -1,19 +1,16 @@
-export const borderRadius = 4;
+export const borderRadius = 10;
 
 export const colors = {
-  primary: 'hsl(0, 0%, 10%)',
-  primarys0l5: 'hsl(0, 0%, 8%)',
-  primarys0l15: 'hsl(0, 0%, 15%)',
-  primarys0l25: 'hsl(0, 0%, 25%)',
-  primarys0l50: 'hsl(0, 0%, 50%)',
-  primarys0l50t40: 'hsla(0, 0%, 50%, 0.4)',
-
-  primarys0l15t95: 'hsl(0, 0%, 15%, 0.97)',
-  primarys0l20: 'hsl(0, 0%, 15%)',
-  primarys0l30: 'hsl(0, 0%, 25%)',
-  primarys0l40: 'hsl(0, 0%, 50%)',
-
-  text: 'hsl(0, 0%, 75%)',
-  red: '#ff5500da',
+  primary: '#121926',
+  primaryOpacity: '#121926ad',
+  primaryLight: '#202939',
+  primaryBorder: '#343F50',
+  primaryWhite: '#CDD5DF',
   white: '#ffffff',
+  text: '#ffffff',
+  textDark: '#CDD5DF',
+  orange: '#F37615',
+  red: '#D84038',
+  green: '#3FD658',
+  transparent: 'transparent',
 };

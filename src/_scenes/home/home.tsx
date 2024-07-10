@@ -23,7 +23,6 @@ const Video = styled.div`
   flex-direction: column;
   border-radius: 5px;
   text-decoration: none;
-  color: inherit; 
   cursor: pointer;
 `;
 

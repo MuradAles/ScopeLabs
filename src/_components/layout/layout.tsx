@@ -23,7 +23,7 @@ const StyleHeader = styled.div`
   z-index: 2;
   height: 100px;
   padding: 1rem;
-  background-color: ${colors.primarys0l15t95};
+  background-color: ${colors.primaryLight};
   display: grid;
   align-items: center;
   justify-content: center;
@@ -58,7 +58,7 @@ const Search = styled.form`
   display:flex;
   align-items: center;
   justify-self: center;
-  border: 2px solid ${colors.primarys0l25};
+  border: 2px solid ${colors.primaryBorder};
   border-radius: ${borderRadius}px;
   height: 2.5rem;
   width: 80%;
@@ -89,20 +89,18 @@ const BackLogo = styled.div`
   justify-content: center;
   width: 100%;
   padding: 1rem;
-  background-color: #15122cbb;
+  background-color: ${colors.primary};
   border-radius: ${borderRadius}px;
 `;
 
 const AccountInformation = styled.div`
-  background-color: ${colors.primarys0l5};
+  background-color: ${colors.primaryLight};
   display: flex;
   width: 100%;
   padding: 0 3%;
   align-items: center;
   gap: 10px;
   border-bottom: 1px solid ${colors.white};
-  position: sticky;
-  top: 0;
   z-index: 1;
 `;
 

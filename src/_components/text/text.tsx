@@ -26,7 +26,7 @@ export const Text = styled.span`
 
 export const ExternalLink = styled.a`
   font-size: 0.9rem;
-  color: #a8a8ff;
+  color: ${colors.textDark};
   text-decoration: underline;
   cursor: pointer;
 `;

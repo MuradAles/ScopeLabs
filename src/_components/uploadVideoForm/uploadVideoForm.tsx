@@ -16,10 +16,10 @@ const UploadFormContainer = styled.div<{ show: boolean }>`
   flex-direction: column;
   width: 30rem;
   right: 10%;
-  background-color: ${colors.primarys0l25};
+  background-color: ${colors.primaryLight};
   padding: 10px;
   border-radius: ${borderRadius}px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px ${colors.primary};
   z-index: 1000;
   transform: translateX(${props => (props.show ? '0%' : '100%')});
   opacity: ${props => (props.show ? 1 : 0)};

@@ -17,7 +17,7 @@ import { VolumeOff } from '@_assets/icons/volumeOff';
 import { VolumeOn } from '@_assets/icons/volumeOn';
 
 const VideoScreen = styled.div`
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: ${colors.primaryOpacity};
   position: fixed;
   top: 5rem;
   left: 0;
@@ -49,7 +49,7 @@ const VideoErrorText = styled.div`
   transform: translate(-50%, -50%);
   font-size: 1rem;
   padding: 5px;
-  background-color: ${colors.primarys0l15};
+  background-color: ${colors.primary};
   border-radius: ${borderRadius}px;
   display: flex;
 `;
@@ -89,7 +89,7 @@ const Controls = styled.div<{ $visible: boolean }>`
   position: absolute;
   display: grid;
   grid-template-rows: 1fr 2fr;
-  background-color: #0000008a;
+  background-color: ${colors.primary};
   width: 100%;
   padding: 0 1rem;
   bottom: 0px;
@@ -113,7 +113,7 @@ const VideoDescription = styled.div`
   flex-direction: column;
   padding: 10px;
   width: 100%;
-  background-color: ${colors.primarys0l15};
+  background-color: ${colors.primary};
   border-radius: ${borderRadius}px;
 `;
 
@@ -163,13 +163,12 @@ const RightControls = styled.div`
 `;
 
 const SeekBar = styled.input<{ value: number, max: number, isHovered: boolean }>`
-  opacity: 0.7;
   width: 100%;
   -webkit-appearance: none;
   background: linear-gradient(
     to right,
-    #ff0000 ${(props) => (props.value / props.max) * 100}%,
-    #d1d1d1 ${(props) => (props.value / props.max) * 100}%
+    ${colors.orange} ${(props) => (props.value / props.max) * 100}%,
+    ${colors.primaryWhite} ${(props) => (props.value / props.max) * 100}%
   );
   cursor: pointer;
   border-radius: 1px;
@@ -179,7 +178,7 @@ const SeekBar = styled.input<{ value: number, max: number, isHovered: boolean }>
     -webkit-appearance: none;
     width: ${(props) => (props.isHovered ? '15px' : '0')};
     height: ${(props) => (props.isHovered ? '15px' : '0')};
-    background: #ff0000;
+    background: ${colors.orange};
     border-radius: 50%;
     transition: width 0.3s, height 0.3s;
   }
@@ -191,8 +190,8 @@ const VolumeBar = styled.input<{ value: number, max: number }>`
   -webkit-appearance: none;
   background: linear-gradient(
     to right,
-    #ffffff ${(props) => (props.value / props.max) * 100}%,
-    #8d8d8d ${(props) => (props.value / props.max) * 100}%
+    ${colors.orange} ${(props) => (props.value / props.max) * 100}%,
+    ${colors.primaryWhite} ${(props) => (props.value / props.max) * 100}%
   );
   cursor: pointer;
   border-radius: 1px;
@@ -202,7 +201,7 @@ const VolumeBar = styled.input<{ value: number, max: number }>`
     -webkit-appearance: none;
     width: ${(props) => (props ? '15px' : '0')};
     height: ${(props) => (props ? '15px' : '0')};
-    background: #ffffff;
+    background: ${colors.orange};
     border-radius: 50%;
     transition: width 0.3s, height 0.3s;
   }
@@ -225,7 +224,7 @@ const SpeedOption = styled.div`
   color: ${colors.white};
 
   &:hover {
-    background-color: ${colors.primarys0l15};
+    background-color: ${colors.primary};
   }
 `;
 
@@ -417,11 +416,10 @@ export const VideoDetails: React.FC = () => {
         style={{
           position: 'absolute',
           zIndex: 1,
-          top: "2.8%",
+          top: "2.%",
           left: "2%",
           width: "2.5rem",
           height: "2.5rem",
-          boxShadow: "0 0 10px 2px rgba(0, 0, 0, 0.5)",
           padding: 0,
         }}>
         <ReturnIcon width="30px" height="30px" />
