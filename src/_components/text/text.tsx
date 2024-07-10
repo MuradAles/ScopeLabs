@@ -19,7 +19,7 @@ export const Title = styled.span`
 export const Text = styled.span`
   display: flex; 
   align-items: center;
-  color: ${colors.text};
+  color: ${colors.textDark};
   word-break: break-word;
   font-size: 0.9rem;
 `;

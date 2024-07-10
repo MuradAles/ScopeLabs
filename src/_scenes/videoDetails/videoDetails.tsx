@@ -60,6 +60,7 @@ const VideoDetailsContent = styled.div`
   bottom: 100px;
   background-color: ${colors.primary};
   padding: 20px;
+  border: 1px solid ${colors.primaryBorder};
   border-radius: ${borderRadius}px;
   width: 90%;
   overflow: auto;
@@ -95,7 +96,7 @@ const Controls = styled.div<{ $visible: boolean }>`
   bottom: 0px;
   transition: opacity 1s;
   opacity: ${props => (props.$visible ? 1 : 0)}; 
-  z-index: 10;
+  border-radius: ${borderRadius}px;
 `;
 
 const SpeedControl = styled.div`
@@ -424,7 +425,7 @@ export const VideoDetails: React.FC = () => {
         }}>
         <ReturnIcon width="30px" height="30px" />
       </Button>
-      <VideoDetailsContent>
+      <VideoDetailsContent >
         {ReactPlayer.canPlay(singleVideo.video_url) ? (
           <VideoPlayer ref={playerContainerRef}>
             <ReactPlayer
@@ -438,6 +439,7 @@ export const VideoDetails: React.FC = () => {
               height="100%"
               onProgress={(progress) => setCurrentTime(progress.playedSeconds)}
               onDuration={(duration) => setDuration(duration)}
+              style={{ overflow: "hidden", borderRadius: `${borderRadius}px` }}
             />
             <Controls
               $visible={controlsVisible}

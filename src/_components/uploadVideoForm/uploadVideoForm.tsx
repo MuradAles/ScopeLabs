@@ -7,6 +7,7 @@ import { validateStringNotEmpty, validateUrl } from '@_validators/index';
 import { AppContextInterface, appContext } from '@_context/context';
 import { Button } from '@_components/button';
 import { TextArea } from '@_components/input';
+import { getVideoThumbnail } from '@_services/index';
 
 // Styles
 const UploadFormContainer = styled.div<{ show: boolean }>`
@@ -14,7 +15,7 @@ const UploadFormContainer = styled.div<{ show: boolean }>`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 30rem;
+  width: 85vw;
   right: 10%;
   background-color: ${colors.primaryLight};
   padding: 10px;
@@ -30,10 +31,10 @@ const UploadFormContainer = styled.div<{ show: boolean }>`
 `;
 
 const Header = styled.form`
-  display:flex;
+  display: flex;
   justify-content: center;
   margin: 0 5px 5px 5px;
-  font-size:  1.2rem;
+  font-size: 1.2rem;
   font-weight: 550;
 `;
 
@@ -53,6 +54,35 @@ const ButtonSection = styled.div`
   gap: 10px;
 `;
 
+const VideoText = styled.div`
+  position: relative;
+  margin-top: 1rem;
+`;
+
+const VideoImage = styled.img`
+  width: 100%;
+  border-radius: ${borderRadius}px;
+  position: relative; 
+  overflow: hidden;
+  aspect-ratio: 4.5 / 3;
+  
+  @media (max-width: 600px) {
+    aspect-ratio: unset;
+  }
+`;
+
+const VideoErrorText = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  padding: 5px;
+  background-color: ${colors.primaryLight};
+  border-radius: ${borderRadius}px;
+  display: flex;
+`;
+
 interface UploadVideoFormProps {
   onClose: () => void;
 }
@@ -66,14 +96,39 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
   const [title, setTitle] = useState('');
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | undefined>(undefined);
+  const [canUpload, setCanUpload] = useState(false); // State to track if upload button should be enabled
 
   useEffect(() => {
     setShowForm(true);
   }, []);
 
+  useEffect(() => {
+    const fetchThumbnail = async (url: string) => {
+      if (validateUrl(url)) {
+        try {
+          const thumbnail = await getVideoThumbnail(url);
+          setThumbnailUrl(thumbnail);
+        } catch (error) {
+          console.error('Failed to fetch video thumbnail:', error);
+          setThumbnailUrl(undefined);
+        }
+      } else {
+        setThumbnailUrl(undefined);
+      }
+    };
+
+    fetchThumbnail(video_url);
+  }, [video_url]);
+
+  useEffect(() => {
+    // Enable upload button when both title and description are not empty and thumbnailUrl is valid
+    setCanUpload(validateStringNotEmpty(title) && validateStringNotEmpty(description) && Boolean(thumbnailUrl));
+  }, [title, description, thumbnailUrl]);
+
   /**
    * Handles form submission for uploading a new video.
-   * 
+   *
    * @param e - The form event object.
    */
   const handleSubmit = async (e: React.FormEvent) => {
@@ -109,6 +164,19 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
     }, 300);
   };
 
+  /**
+   * Handles uploading the video.
+   */
+  const handleUpload = async () => {
+    try {
+      setIsNewVideoUploaded(true);
+      await createVideo({ user_id, description, video_url, title });
+      handleClose();
+    } catch (error) {
+      console.error('Failed to create video:', error);
+    }
+  };
+
   return (
     <UploadFormContainer show={showForm}>
       <Header>Upload Video</Header>
@@ -116,7 +184,10 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
         <TextArea
           id="video_url"
           placeholder="Video URL"
-          onChange={(e) => setVideoUrl(e.target.value)}
+          onChange={(e) => {
+            setVideoUrl(e.target.value);
+            setThumbnailUrl(undefined);
+          }}
           style={{ resize: 'vertical', width: '100%' }}
         />
         <TextArea
@@ -132,11 +203,22 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
           style={{ resize: 'vertical', width: '100%' }}
         />
         <ButtonSection>
-          <Button type="submit">Upload</Button>
+          {canUpload && <Button type="button" onClick={handleUpload}>Upload</Button>}
           <Button type="button" onClick={handleClose}>Cancel</Button>
         </ButtonSection>
         {error && <ErrorText>{error}</ErrorText>}
       </Form>
+      {thumbnailUrl ? (
+        <VideoText>
+          <VideoImage src={thumbnailUrl} alt="Video Thumbnail" />
+          <VideoErrorText>Video URL is playable</VideoErrorText>
+        </VideoText>
+      ) : (
+        <VideoText>
+          <VideoImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
+          <VideoErrorText>Video URL is not playable</VideoErrorText>
+        </VideoText>
+      )}
     </UploadFormContainer>
   );
 };

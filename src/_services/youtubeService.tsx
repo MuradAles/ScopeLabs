@@ -8,7 +8,7 @@
 export const getVideoThumbnail = async (videoUrl: string): Promise<string | undefined> => {
   const videoId = extractYouTubeVideoId(videoUrl);
   if (videoId) {
-    return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
   } else {
     return undefined;
   }
