@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { AppContextInterface, appContext } from '@_context/context';
 import { Button, ErrorText, TextArea, Text, Title } from '@_components/index';
 import { CommentParams } from '@_interfaces/types';
-import { colors, borderRadius } from '@_constants/styleConstants';
+import { colors, borderRadius, gapSize } from '@_constants/styleConstants';
 import { createComment } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/utilities';
 import { validateStringNotEmpty } from '@_validators/videoValidators';
@@ -37,14 +37,22 @@ const CreateComment = styled.form<{ isExpanded: boolean }>`
 const Comment = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 6px;
   margin-top: 8px;
+  padding: 5px;
+  border: 1px solid ${colors.primaryBorder};
   border-radius: ${borderRadius}px;
 `;
 
 const CommentHeader = styled.div`
   display: flex;
-  gap: 10px;
+  gap: ${gapSize}px;
+  border-bottom: 1px solid ${colors.primaryBorder};
+`;
+
+const CommentBubble = styled.div`
+  border-radius: ${borderRadius}px;
+  padding: 5px 12px;
+  margin-top: 6px;
 `;
 
 const ButtonsContainer = styled.div`
@@ -146,7 +154,9 @@ export const VideoComments = () => {
             <Title>{comment.user_id}</Title>
             <Text>{formatDateDistance(comment.created_at)}</Text>
           </CommentHeader>
-          <Text>{comment.content}</Text>
+          <CommentBubble>
+            <Text>{comment.content}</Text>
+          </CommentBubble>
         </Comment>
       ))}
     </Comments>

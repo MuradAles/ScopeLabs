@@ -2,7 +2,7 @@ import { Button, TextArea, Text, ErrorText } from '@_components/index';
 import { AppContextInterface, appContext } from '@_context/context';
 import { editVideo } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/index';
-import { colors, borderRadius } from '@_constants/styleConstants';
+import { colors, borderRadius, titleSize, gapSize } from '@_constants/styleConstants';
 import { ReturnIcon } from '@_assets/icons/return';
 import FullScreenIcon from '@_assets/icons/fullScreen';
 import PauseIcon from '@_assets/icons/pause';
@@ -47,7 +47,7 @@ const VideoErrorText = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1rem;
+  font-size: ${titleSize};
   padding: 5px;
   background-color: ${colors.primaryLight};
   border-radius: ${borderRadius}px;
@@ -105,7 +105,7 @@ const SpeedControl = styled.div`
 
   select {
     padding: 8px;
-    font-size: 1rem;
+    font-size: ${titleSize};
   }
 `;
 
@@ -121,7 +121,7 @@ const VideoDescription = styled.div`
 const TitleRow = styled.div`
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: ${gapSize}px;
   margin-bottom: 6px;
 `;
 
@@ -129,7 +129,7 @@ const DescriptionRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: ${gapSize}px;
 `;
 
 const ControlButton = styled.button`
@@ -153,14 +153,14 @@ const LeftControls = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: ${gapSize}px;
 `;
 
 const RightControls = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: ${gapSize}px;
 `;
 
 const SeekBar = styled.input<{ value: number, max: number, isHovered: boolean }>`
@@ -231,7 +231,7 @@ const SpeedOption = styled.div`
 
 const ButtonSection = styled.div`
   display:flex;
-  gap: 10px;
+  gap: ${gapSize}px;
 `;
 
 export const VideoDetails: React.FC = () => {

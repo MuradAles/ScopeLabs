@@ -1,9 +1,9 @@
-import { colors } from "@_constants/styleConstants";
+import { colors, textSize, titleSize } from "@_constants/styleConstants";
 import styled from "styled-components";
 
 export const Title = styled.span`
   max-width: 100%;
-  font-size: 1.1em;
+  font-size: ${titleSize};
   font-weight: 700;
   overflow: hidden;
   display: -webkit-box;
@@ -21,11 +21,11 @@ export const Text = styled.span`
   align-items: center;
   color: ${colors.textDark};
   word-break: break-word;
-  font-size: 0.9rem;
+  font-size: ${textSize};
 `;
 
 export const ExternalLink = styled.a`
-  font-size: 0.9rem;
+  font-size: ${textSize};
   color: ${colors.textDark};
   text-decoration: underline;
   cursor: pointer;

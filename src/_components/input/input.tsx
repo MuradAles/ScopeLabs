@@ -1,11 +1,11 @@
-import { colors } from "@_constants/styleConstants";
+import { colors, textSize } from "@_constants/styleConstants";
 import styled from "styled-components";
 
 const inputStyles = `
   border: none;
   color: ${colors.text};
   background-color: ${colors.transparent};
-  font-size: 1rem;
+  font-size: ${textSize};
   box-shadow: inset 0 -1px 0 0 ${colors.primaryBorder};
   &:focus {
     outline: none;

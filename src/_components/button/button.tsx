@@ -1,26 +1,25 @@
-import { borderRadius, colors } from '@_constants/index';
+import { borderRadius, colors, gapSize } from '@_constants/index';
 import styled from 'styled-components';
 
 
 export const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: ${gapSize}px;
   background-color: ${colors.orange};
-  border: none;
   color: ${colors.white};
+  border: none;
   border-radius: ${borderRadius}px;
   cursor: pointer;
-  width: 4rem;
-  padding: 6px 12px;
-  box-shadow: 0 2px 0 0 ${colors.white};
-  transition: all 0.2s ease;
+  padding: 5px 10px;
 
   &:hover {
     background-color: ${colors.primaryBorder};
   }
 
   &:active {
-    background-color: ${colors.primaryBorder};
-    transform: translateY(4px);
-    box-shadow: 0 1px 2px ${colors.primaryWhite};;
+    background-color: ${colors.primaryLight};
   }
 `;
 

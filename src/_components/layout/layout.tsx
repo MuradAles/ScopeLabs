@@ -1,43 +1,40 @@
 import { useRef, useState, ReactNode, useContext } from 'react';
 import styled from 'styled-components';
 import { useClickAway } from 'react-use';
-import { borderRadius, colors } from '@_constants/index';
+import { borderRadius, colors, gapSize, sizeOfIcons, sizeOfIconsSmall, titleSize, titleSizeBig } from '@_constants/index';
 import { Link } from 'react-router-dom';
 import { SearchIcon } from '@_assets/icons/search';
 import { AppContextInterface, appContext } from '@_context/index';
 import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
 import { UploadVideoForm } from '@_components/uploadVideoForm';
-import { SearchButton } from '@_components/button';
+import { Button, SearchButton } from '@_components/button';
 import { Input } from '@_components/input';
-import { HoverTooltip } from '@_components/hoverTooltip';
 import { ExternalLink, Text, Title } from '@_components/text';
 import { MyLogo } from '@_assets/icons/myLogo';
 import { SomeoneLogo } from '@_assets/icons/someoneLogo';
+import { LinkedIn } from '@_assets/icons/linkedIn';
+import { GitHub } from '@_assets/icons/github';
 
 // Styles
 const StyleHeader = styled.div`
   position: sticky;
   top: 0;
   z-index: 2;
-  height: 100px;
-  padding: 1rem;
+  height: 55px;
+  padding: 0 5%;
   background-color: ${colors.primary};
   display: grid;
   align-items: center;
   justify-content: center;
-  grid-template-columns: 1fr 5fr 1fr;
-  grid-column-gap: 10px;
+  grid-template-columns: 1fr 3fr;
+  grid-column-gap: ${gapSize}px;
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr 10fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
   }
 `;
 
 const ReturnToHomePage = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  border-radius: ${borderRadius}px;
-  position: relative;
 `;
 
 const LogoImage = styled.img`
@@ -58,15 +55,15 @@ const Search = styled.form`
   justify-self: center;
   border: 2px solid ${colors.primaryBorder};
   border-radius: ${borderRadius}px;
-  height: 2.5rem;
-  width: 80%;
+  height: 2rem;
+  width: 50%;
 
   @media (max-width: 600px) {
     width: 100%;
   }
 `;
 
-const UploadVideo = styled.div`
+const UploadVideoModel = styled.div`
   position: relative;
   justify-self: center;
   cursor: pointer;
@@ -78,25 +75,40 @@ const CurrentUsername = styled.div`
   flex-direction: column;
   align-items:center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: ${titleSize};
   border-radius: ${borderRadius}px;
   `;
 
-const AccountInformation = styled.div`
-  background-color: ${colors.primaryLight};
+const AccountHeader = styled.div`
+  background-color: ${colors.primary};
   display: flex;
+  height: 8rem;
   width: 100%;
-  padding: 0 3%;
+  padding: 0 5%;
   align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid ${colors.white};
+  gap: ${gapSize}px;
+  border-bottom: 2px solid ${colors.primaryLight};
   z-index: 1;
 `;
+
+const UserLogo = styled.div``;
 
 const UserDescription = styled.div`
   display: flex;
   flex-direction:column;
+  align-items: start;
+  `;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${gapSize}px;
   width: 100%;
+`;
+
+const LinksSection = styled.div`
+  display: flex;
+  gap: ${gapSize}px;
 `;
 
 const MainContent = styled.div`
@@ -105,6 +117,11 @@ const MainContent = styled.div`
 
 const Footer = styled.div``;
 
+const UploadButtonTitle = styled(Title)`
+  @media (max-width: 600px) {
+    display: none;
+  }
+`;
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { user, setUser, setSelectedVideoId } = useContext(appContext) as AppContextInterface; // Accessing user state and setter functions from app context.
@@ -146,19 +163,15 @@ export const Layout = ({ children }: { children: ReactNode }) => {
     <>
       <StyleHeader>
         <ReturnToHomePage to="/">
-          <HoverTooltip tooltipContent="Return to Home">
-            <LogoImage onClick={handleLogoClick} src="/FULL_LOGO_COLOR.png" alt="Full Logo Color" />
-          </HoverTooltip>
+          <LogoImage onClick={handleLogoClick} src="/FULL_LOGO_COLOR.png" alt="Full Logo Color" />
         </ReturnToHomePage>
         <Search onSubmit={handleSearchSubmit}>
           <SearchButton type="submit">
-            <HoverTooltip tooltipContent="Search Users">
-              <SearchIcon fill='white' height={"20px"} />
-            </HoverTooltip>
+            <SearchIcon fill='white' height={`${sizeOfIconsSmall}px`} />
           </SearchButton>
           <Input
             id="search"
-            placeholder="Search username"
+            placeholder="Search"
             value={localUsername}
             onChange={(e) => setLocalUsername(e.target.value)}
             style={{
@@ -166,51 +179,56 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             }}
           />
         </Search>
-        <UploadVideo ref={ref}>
-          <HoverTooltip tooltipContent="Upload Video">
-            <UploadVideoIcon fill='white' height={"30px"} onClick={toggleUploadForm} />
-          </HoverTooltip>
-          {showUploadForm && <UploadVideoForm onClose={toggleUploadForm} />}
-        </UploadVideo>
       </StyleHeader>
       <CurrentUsername>
-        <AccountInformation>
-          {user.user_id !== "murad_aleskerov" ? (
-            <SomeoneLogo height="10rem" />
-          ) : (
-            <MyLogo height="10rem" />
-          )}
+        <AccountHeader>
+          <UserLogo>
+            {user.user_id !== "murad_aleskerov" ? (
+              <SomeoneLogo height="5rem" />
+            ) : (
+              <MyLogo height="5rem" />
+            )}
+          </UserLogo>
           <UserDescription>
-            <Title>
+            <Title style={{ fontSize: titleSizeBig }}>
               {user.user_id}
             </Title>
             {user.user_id !== "murad_aleskerov" ? (
-              <>
+              <UserInfo>
                 <Text>
                   Not a Full Stack Developer
                 </Text>
                 <ExternalLink href="https://www.linkedin.com">
-                  https://www.linkedin.com
+                  <LinkedIn height={`${sizeOfIcons}px`} />
                 </ExternalLink>
                 <ExternalLink href="https://github.com">
-                  https://github.com
+                  <GitHub height={`${sizeOfIcons}px`} />
                 </ExternalLink>
-              </>
+              </UserInfo>
             ) : (
-              <>
+              <UserInfo>
                 <Text>
                   A Full Stack Developer
                 </Text>
-                <ExternalLink href="https://www.linkedin.com/in/murad-aleskerov/">
-                  linkedin.com/in/murad-aleskerov/
-                </ExternalLink>
-                <ExternalLink href="https://github.com/MuradAles/ScopeLabs">
-                  github.com/MuradAles/ScopeLabs
-                </ExternalLink>
-              </>
+                <LinksSection>
+                  <ExternalLink href="https://www.linkedin.com/in/murad-aleskerov/">
+                    <LinkedIn height={`${sizeOfIcons}px`} />
+                  </ExternalLink>
+                  <ExternalLink href="https://github.com/MuradAles/ScopeLabs">
+                    <GitHub height={`${sizeOfIcons}px`} />
+                  </ExternalLink>
+                </LinksSection>
+              </UserInfo>
             )}
           </UserDescription>
-        </AccountInformation>
+          <Button onClick={toggleUploadForm} style={{ marginLeft: "auto" }}>
+            <UploadVideoIcon fill={colors.transparent} width={`30px`} />
+            <UploadButtonTitle>Upload New Video</UploadButtonTitle>
+          </Button>
+          <UploadVideoModel ref={ref}>
+            {showUploadForm && <UploadVideoForm onClose={toggleUploadForm} />}
+          </UploadVideoModel>
+        </AccountHeader>
       </CurrentUsername>
       <MainContent>
         {children}

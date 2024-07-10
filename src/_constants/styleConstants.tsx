@@ -1,3 +1,14 @@
+export const textSize = "0.8rem";
+export const titleSize = "1rem";
+export const titleSizeBig = "1.5rem";
+
+export const gapSize = 8;
+export const gapSizeBig = 16;
+
+export const sizeOfIcons = 30;
+export const sizeOfIconsBig = 40;
+export const sizeOfIconsSmall = 20;
+
 export const borderRadius = 10;
 
 export const colors = {
@@ -8,7 +19,7 @@ export const colors = {
   primaryWhite: '#CDD5DF',
   white: '#ffffff',
   text: '#ffffff',
-  textDark: '#CDD5DF',
+  textDark: '#acb4bd',
   orange: '#F37615',
   red: '#D84038',
   green: '#3FD658',

@@ -3,7 +3,7 @@ import { Layout } from '@_components/layout';
 import { Text, Title } from '@_components/index';
 import { VideoDetails } from '@_scenes/videoDetails/videoDetails';
 import { VideoParams } from '@_interfaces/index';
-import { borderRadius, colors } from '@_constants/styleConstants';
+import { borderRadius, colors, gapSizeBig } from '@_constants/styleConstants';
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -11,7 +11,7 @@ import styled from 'styled-components';
 const Videos = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: ${gapSizeBig}px;
   @media (max-width: 1200px){
     grid-template-columns: repeat(3, 1fr);
   }
@@ -29,7 +29,7 @@ const Video = styled.div`
   transition: transform 0.3s, box-shadow 0.3s;
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 0 2px ${colors.orange};
+    /* box-shadow: 0 0 0 2px ${colors.orange}; */
   }
 `;
 

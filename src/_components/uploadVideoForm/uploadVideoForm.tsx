@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { borderRadius, colors } from '@_constants/index';
+import { borderRadius, colors, gapSize, textSize, titleSize } from '@_constants/index';
 
 import { createVideo } from '@_services/videosService';
 import { validateStringNotEmpty, validateUrl } from '@_validators/index';
@@ -22,7 +22,6 @@ const UploadFormContainer = styled.div<{ show: boolean }>`
   border-radius: ${borderRadius}px;
   box-shadow: 0 0 10px ${colors.primary};
   z-index: 1000;
-  transform: translateX(${props => (props.show ? '0%' : '100%')});
   opacity: ${props => (props.show ? 1 : 0)};
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
   @media (max-width: 600px) {
@@ -34,14 +33,14 @@ const Header = styled.form`
   display: flex;
   justify-content: center;
   margin: 0 5px 5px 5px;
-  font-size: 1.2rem;
+  font-size: ${titleSize};
   font-weight: 550;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: ${gapSize}px;
 `;
 
 const ErrorText = styled.div`
@@ -51,7 +50,7 @@ const ErrorText = styled.div`
 const ButtonSection = styled.div`
   display: flex;
   justify-content: end;
-  gap: 10px;
+  gap: ${gapSize}px;
 `;
 
 const VideoText = styled.div`
@@ -60,7 +59,7 @@ const VideoText = styled.div`
 `;
 
 const VideoImage = styled.img`
-  width: 100%;
+  width: 50%;
   border-radius: ${borderRadius}px;
   position: relative; 
   overflow: hidden;
@@ -76,7 +75,7 @@ const VideoErrorText = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1rem;
+  font-size: ${textSize};
   padding: 5px;
   background-color: ${colors.primaryLight};
   border-radius: ${borderRadius}px;

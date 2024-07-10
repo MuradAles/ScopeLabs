@@ -1,6 +1,33 @@
 import { SVGProps } from "react"
 export const UploadVideoIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 102 82" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <path d="M15.3 61.5H66.3L48.705 38.4375L36.975 53.8125L29.07 43.5625L15.3 61.5ZM10.2 82C7.395 82 4.99375 80.9964 2.99625 78.9891C0.99875 76.9818 0 74.5687 0 71.75V10.25C0 7.43125 0.99875 5.01823 2.99625 3.01094C4.99375 1.00365 7.395 0 10.2 0H71.4C74.205 0 76.6062 1.00365 78.6038 3.01094C80.6012 5.01823 81.6 7.43125 81.6 10.25V33.3125L102 12.8125V69.1875L81.6 48.6875V71.75C81.6 74.5687 80.6012 76.9818 78.6038 78.9891C76.6062 80.9964 74.205 82 71.4 82H10.2ZM10.2 71.75H71.4V10.25H10.2V71.75Z" />
+  <svg
+    viewBox="0 0 28 27"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M20.5 9.5H23C25.2091 9.5 27 11.2909 27 13.5V21.5C27 23.7091 25.2091 25.5 23 25.5H5C2.79086 25.5 1 23.7091 1 21.5V13.5C1 11.2909 2.79086 9.5 5 9.5H7.5"
+      stroke="white"
+      strokeWidth={2}
+    />
+    <path
+      d="M14 19.5L14 2.5"
+      stroke="white"
+      strokeWidth={2}
+      strokeLinecap="round"
+    />
+    <path
+      d="M9 5.5L14 1.5"
+      stroke="white"
+      strokeWidth={2}
+      strokeLinecap="round"
+    />
+    <path
+      d="M14 1.5L19 5.5"
+      stroke="white"
+      strokeWidth={2}
+      strokeLinecap="round"
+    />
   </svg>
-)
+);
