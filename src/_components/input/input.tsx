@@ -3,19 +3,22 @@ import styled from "styled-components";
 
 const inputStyles = `
   border: none;
-  color: ${colors.white};
-  background-color: transparent;
+  color: ${colors.text};
+  background-color: ${colors.transparent};
   font-size: 1rem;
   box-shadow: inset 0 -1px 0 0 ${colors.primaryBorder};
   &:focus {
     outline: none;
+  }
+  &::placeholder {
+    color: ${colors.textDark};
   }
 `;
 
 export const Input = styled.input.attrs<{ id: string }>((props) => ({
   id: props.id,
 }))`
-  ${inputStyles}
+  ${inputStyles};
   width: 80%;
   height: 1.5rem;
 `;

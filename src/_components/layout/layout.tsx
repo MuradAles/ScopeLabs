@@ -11,8 +11,6 @@ import { SearchButton } from '@_components/button';
 import { Input } from '@_components/input';
 import { HoverTooltip } from '@_components/hoverTooltip';
 import { ExternalLink, Text, Title } from '@_components/text';
-import { BehindLogo } from '@_assets/icons/behindLogo';
-import { Emanon } from '@_assets/icons/emanon';
 import { MyLogo } from '@_assets/icons/myLogo';
 import { SomeoneLogo } from '@_assets/icons/someoneLogo';
 
@@ -23,7 +21,7 @@ const StyleHeader = styled.div`
   z-index: 2;
   height: 100px;
   padding: 1rem;
-  background-color: ${colors.primaryLight};
+  background-color: ${colors.primary};
   display: grid;
   align-items: center;
   justify-content: center;
@@ -38,7 +36,7 @@ const StyleHeader = styled.div`
 const ReturnToHomePage = styled(Link)`
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: ${borderRadius}px;
   position: relative;
 `;
 
@@ -84,15 +82,6 @@ const CurrentUsername = styled.div`
   border-radius: ${borderRadius}px;
   `;
 
-const BackLogo = styled.div`
-  display:flex;
-  justify-content: center;
-  width: 100%;
-  padding: 1rem;
-  background-color: ${colors.primary};
-  border-radius: ${borderRadius}px;
-`;
-
 const AccountInformation = styled.div`
   background-color: ${colors.primaryLight};
   display: flex;
@@ -104,7 +93,6 @@ const AccountInformation = styled.div`
   z-index: 1;
 `;
 
-
 const UserDescription = styled.div`
   display: flex;
   flex-direction:column;
@@ -112,7 +100,7 @@ const UserDescription = styled.div`
 `;
 
 const MainContent = styled.div`
-  margin:10px 25px;
+  margin:2rem 5%;
 `;
 
 const Footer = styled.div``;
@@ -186,15 +174,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </UploadVideo>
       </StyleHeader>
       <CurrentUsername>
-        {user.user_id !== "murad_aleskerov" ? (
-          <BackLogo>
-            <Emanon height="11rem" />
-          </BackLogo>
-        ) : (
-          <BackLogo>
-            <BehindLogo height="11rem" />
-          </BackLogo>
-        )}
         <AccountInformation>
           {user.user_id !== "murad_aleskerov" ? (
             <SomeoneLogo height="10rem" />

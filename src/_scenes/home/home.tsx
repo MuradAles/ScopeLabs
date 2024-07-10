@@ -3,16 +3,18 @@ import { Layout } from '@_components/layout';
 import { Text, Title } from '@_components/index';
 import { VideoDetails } from '@_scenes/videoDetails/videoDetails';
 import { VideoParams } from '@_interfaces/index';
-import { borderRadius } from '@_constants/styleConstants';
-import { formatDateDistance } from '@_utilities/index';
+import { borderRadius, colors } from '@_constants/styleConstants';
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
 // Styles
 const Videos = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  @media (max-width: 1200px){
+    grid-template-columns: repeat(3, 1fr);
+  }
   @media (max-width: 600px){
     grid-template-columns: repeat(2, 1fr);
   }
@@ -21,9 +23,14 @@ const Videos = styled.div`
 const Video = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
-  text-decoration: none;
+  border-radius: ${borderRadius}px;
+  background-color: ${colors.primaryLight};
   cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 2px ${colors.orange};
+  }
 `;
 
 const VideoImage = styled.img`
@@ -75,9 +82,7 @@ export const Home = () => {
               ) : (
                 <VideoImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
               )}
-              <Title>{video.title}</Title>
-              <Text>{formatDateDistance(video.created_at)}</Text>
-              <Text>Comments: {video.num_comments}</Text>
+              <Title style={{ textAlign: "center" }}>{video.title}</Title>
             </Video>
           ))
         ) : (

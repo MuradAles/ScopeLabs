@@ -1,7 +1,7 @@
 // src/_components/hoverTooltip/hoverTooltip.tsx
 
 import styled, { css } from 'styled-components';
-import { colors } from '@_constants/styleConstants';
+import { colors, borderRadius } from '@_constants/styleConstants';
 
 interface HoverTooltipProps {
   tooltipContent: string;
@@ -19,7 +19,7 @@ export const HoverTooltip = styled.div<HoverTooltipProps>`
     padding: 5px 10px;
     background-color: ${colors.primaryLight};
     color: ${colors.text};
-    border-radius: 5px;
+    border-radius: ${borderRadius}px;
     white-space: nowrap;
     opacity: 1;
     visibility: visible;

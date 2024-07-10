@@ -1,4 +1,4 @@
-import { colors } from '@_constants/index';
+import { colors, borderRadius } from '@_constants/index';
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
@@ -26,7 +26,7 @@ export const GlobalStyle = createGlobalStyle`
 
   ::-webkit-scrollbar-thumb {
     background: ${colors.primaryLight};
-    border-radius: 5px;
+    border-radius: ${borderRadius}px;
   }
 
   ::-webkit-scrollbar-thumb:hover {

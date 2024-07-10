@@ -20,12 +20,12 @@ export const Button = styled.button`
   &:active {
     background-color: ${colors.primaryBorder};
     transform: translateY(4px);
-    box-shadow: 0 0 2px ${colors.primaryWhite};;
+    box-shadow: 0 1px 2px ${colors.primaryWhite};;
   }
 `;
 
 export const SearchButton = styled.button`
-  background-color: transparent;
+  background-color: ${colors.transparent};
   border: none;
   color: ${colors.white};
   border-radius: ${borderRadius}px;

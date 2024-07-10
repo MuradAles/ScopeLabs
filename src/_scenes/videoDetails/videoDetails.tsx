@@ -49,7 +49,7 @@ const VideoErrorText = styled.div`
   transform: translate(-50%, -50%);
   font-size: 1rem;
   padding: 5px;
-  background-color: ${colors.primary};
+  background-color: ${colors.primaryLight};
   border-radius: ${borderRadius}px;
   display: flex;
 `;
@@ -58,7 +58,7 @@ const VideoDetailsContent = styled.div`
   position: absolute;
   top: 40px;
   bottom: 100px;
-  background-color: hsla(0, 0%, 10.196078431372548%, 0.95);
+  background-color: ${colors.primary};
   padding: 20px;
   border-radius: ${borderRadius}px;
   width: 90%;
@@ -89,7 +89,7 @@ const Controls = styled.div<{ $visible: boolean }>`
   position: absolute;
   display: grid;
   grid-template-rows: 1fr 2fr;
-  background-color: ${colors.primary};
+  background-color: ${colors.primaryLight};
   width: 100%;
   padding: 0 1rem;
   bottom: 0px;
@@ -113,7 +113,7 @@ const VideoDescription = styled.div`
   flex-direction: column;
   padding: 10px;
   width: 100%;
-  background-color: ${colors.primary};
+  background-color: ${colors.primaryLight};
   border-radius: ${borderRadius}px;
 `;
 
@@ -132,7 +132,7 @@ const DescriptionRow = styled.div`
 `;
 
 const ControlButton = styled.button`
-  background-color: transparent;
+  background-color: ${colors.transparent};
   border: none;
   cursor: pointer;
 `;
@@ -171,7 +171,7 @@ const SeekBar = styled.input<{ value: number, max: number, isHovered: boolean }>
     ${colors.primaryWhite} ${(props) => (props.value / props.max) * 100}%
   );
   cursor: pointer;
-  border-radius: 1px;
+  border-radius: ${borderRadius}px;
   height: 5px;
   outline: none;
   &::-webkit-slider-thumb {
@@ -194,7 +194,7 @@ const VolumeBar = styled.input<{ value: number, max: number }>`
     ${colors.primaryWhite} ${(props) => (props.value / props.max) * 100}%
   );
   cursor: pointer;
-  border-radius: 1px;
+  border-radius: ${borderRadius}px;
   height: 5px;
   outline: none;
   &::-webkit-slider-thumb {
@@ -416,7 +416,7 @@ export const VideoDetails: React.FC = () => {
         style={{
           position: 'absolute',
           zIndex: 1,
-          top: "2.%",
+          top: "2%",
           left: "2%",
           width: "2.5rem",
           height: "2.5rem",
@@ -524,7 +524,7 @@ export const VideoDetails: React.FC = () => {
                   id="input-video-description"
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
-                  style={{ color: colors.text }}
+                  style={{ color: colors.white }}
                 />
                 <ButtonSection>
                   <Button onClick={handleCancelEdit}>Cancel</Button>
@@ -549,7 +549,7 @@ export const VideoDetails: React.FC = () => {
                   id="input-video-description"
                   readOnly
                   value={singleVideo.description}
-                  style={{ boxShadow: "none", resize: "none", color: colors.text }}
+                  style={{ boxShadow: "none", resize: "none", color: colors.white }}
                 />
                 <Button onClick={handleEdit}>Edit</Button>
               </DescriptionRow>
