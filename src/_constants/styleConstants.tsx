@@ -3,11 +3,12 @@ export const titleSize = "1rem";
 export const titleSizeBig = "1.5rem";
 
 export const gapSize = 8;
+export const gapSizeSmall = 4;
 export const gapSizeBig = 16;
 
 export const sizeOfIcons = 30;
 export const sizeOfIconsBig = 40;
-export const sizeOfIconsSmall = 20;
+export const sizeOfIconsSmall = 15;
 
 export const borderRadius = 10;
 

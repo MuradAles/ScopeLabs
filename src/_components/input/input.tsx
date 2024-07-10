@@ -27,10 +27,24 @@ export const TextArea = styled.textarea.attrs<{ id: string }>((props) => ({
   maxLength: 500,
   id: props.id,
 }))`
-  ${inputStyles}
+  ${inputStyles};
   width: 80%;
   white-space: pre-wrap;
   overflow: hidden;
   resize: none;
   height: 1.5rem;
+`;
+
+export const TextAreaDescription = styled.textarea.attrs<{ id: string }>((props) => ({
+  maxLength: 500,
+  id: props.id,
+}))`
+  ${inputStyles};
+  background-color: ${colors.primaryLight};
+  width: 80%;
+  white-space: pre-wrap;
+  overflow: hidden;
+  resize: vertical;
+  min-height: 5rem;
+  max-height: 10rem;
 `;

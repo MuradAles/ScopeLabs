@@ -1,8 +1,8 @@
-import { Button, TextArea, Text, ErrorText } from '@_components/index';
+import { Button, TextArea, Text, ErrorText, TextAreaDescription } from '@_components/index';
 import { AppContextInterface, appContext } from '@_context/context';
 import { editVideo } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/index';
-import { colors, borderRadius, titleSize, gapSize } from '@_constants/styleConstants';
+import { colors, borderRadius, titleSize, gapSize, sizeOfIconsSmall } from '@_constants/styleConstants';
 import { ReturnIcon } from '@_assets/icons/return';
 import FullScreenIcon from '@_assets/icons/fullScreen';
 import PauseIcon from '@_assets/icons/pause';
@@ -19,7 +19,7 @@ import { VolumeOn } from '@_assets/icons/volumeOn';
 const VideoScreen = styled.div`
   background-color: ${colors.primaryOpacity};
   position: fixed;
-  top: 5rem;
+  top: 55px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -413,19 +413,19 @@ export const VideoDetails: React.FC = () => {
 
   return (
     <VideoScreen>
-      <Button onClick={handleClose}
-        style={{
-          position: 'absolute',
-          zIndex: 1,
-          top: "2%",
-          left: "2%",
-          width: "2.5rem",
-          height: "2.5rem",
-          padding: 0,
-        }}>
-        <ReturnIcon width="30px" height="30px" />
-      </Button>
-      <VideoDetailsContent >
+      <VideoDetailsContent>
+        <Button onClick={handleClose}
+          style={{
+            position: 'fixed',
+            zIndex: 1,
+            top: "6.1rem",
+            right: "5.3%",
+            width: "1.5rem",
+            height: "1.5rem",
+            padding: 0,
+          }}>
+          <ReturnIcon width={`${sizeOfIconsSmall}px`} height={`${sizeOfIconsSmall}px`} />
+        </Button>
         {ReactPlayer.canPlay(singleVideo.video_url) ? (
           <VideoPlayer ref={playerContainerRef}>
             <ReactPlayer
@@ -522,7 +522,7 @@ export const VideoDetails: React.FC = () => {
                 <Text>{formatDateDistance(singleVideo.created_at)}</Text>
               </TitleRow>
               <DescriptionRow>
-                <TextArea
+                <TextAreaDescription
                   id="input-video-description"
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}

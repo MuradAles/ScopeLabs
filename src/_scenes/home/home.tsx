@@ -3,7 +3,7 @@ import { Layout } from '@_components/layout';
 import { Text, Title } from '@_components/index';
 import { VideoDetails } from '@_scenes/videoDetails/videoDetails';
 import { VideoParams } from '@_interfaces/index';
-import { borderRadius, colors, gapSizeBig } from '@_constants/styleConstants';
+import { borderRadius, colors, gapSize, gapSizeBig } from '@_constants/styleConstants';
 import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -27,9 +27,9 @@ const Video = styled.div`
   background-color: ${colors.primaryLight};
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
+  gap: ${gapSize}px;
   &:hover {
     transform: scale(1.05);
-    /* box-shadow: 0 0 0 2px ${colors.orange}; */
   }
 `;
 
@@ -82,7 +82,7 @@ export const Home = () => {
               ) : (
                 <VideoImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
               )}
-              <Title style={{ textAlign: "center" }}>{video.title}</Title>
+              <Title style={{ textAlign: "center", margin: "0 5px 5px" }}>{video.title}</Title>
             </Video>
           ))
         ) : (

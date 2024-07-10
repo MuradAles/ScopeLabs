@@ -1,7 +1,7 @@
 import { useRef, useState, ReactNode, useContext } from 'react';
 import styled from 'styled-components';
 import { useClickAway } from 'react-use';
-import { borderRadius, colors, gapSize, sizeOfIcons, sizeOfIconsSmall, titleSize, titleSizeBig } from '@_constants/index';
+import { borderRadius, colors, gapSize, gapSizeSmall, sizeOfIconsSmall, textSize } from '@_constants/index';
 import { Link } from 'react-router-dom';
 import { SearchIcon } from '@_assets/icons/search';
 import { AppContextInterface, appContext } from '@_context/index';
@@ -9,12 +9,9 @@ import { UploadVideoIcon } from '@_assets/icons/uploadVideo';
 import { UploadVideoForm } from '@_components/uploadVideoForm';
 import { Button, SearchButton } from '@_components/button';
 import { Input } from '@_components/input';
-import { ExternalLink, Text, Title } from '@_components/text';
+import { Title } from '@_components/text';
 import { MyLogo } from '@_assets/icons/myLogo';
 import { SomeoneLogo } from '@_assets/icons/someoneLogo';
-import { LinkedIn } from '@_assets/icons/linkedIn';
-import { GitHub } from '@_assets/icons/github';
-
 // Styles
 const StyleHeader = styled.div`
   position: sticky;
@@ -25,21 +22,31 @@ const StyleHeader = styled.div`
   background-color: ${colors.primary};
   display: grid;
   align-items: center;
-  justify-content: center;
-  grid-template-columns: 1fr 3fr;
+  justify-content: space-between;
+  grid-template-columns: 1fr 2fr 1fr;
   grid-column-gap: ${gapSize}px;
+  border-bottom: 2px solid ${colors.primaryBorder};
 
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr 3fr 1fr;
+  & > *:first-child {
+    justify-self: start;
   }
-`;
 
-const ReturnToHomePage = styled(Link)`
+  & > *:nth-child(2) {
+    justify-self: center;
+  }
+
+  & > *:last-child {
+    justify-self: end;
+  }
+  
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr 3fr 3fr;
+  }
 `;
 
 const LogoImage = styled.img`
   height: 3rem;  
-  width: 12rem;  
+  width: 11rem;  
   justify-self: center;
   cursor: pointer;
 
@@ -56,71 +63,47 @@ const Search = styled.form`
   border: 2px solid ${colors.primaryBorder};
   border-radius: ${borderRadius}px;
   height: 2rem;
-  width: 50%;
+  width: 80%;
 
   @media (max-width: 600px) {
     width: 100%;
   }
 `;
 
-const UploadVideoModel = styled.div`
-  position: relative;
-  justify-self: center;
-  cursor: pointer;
+const ReturnToHomePage = styled(Link)`
 `;
-
-const CurrentUsername = styled.div`
-  width: 100%;
-  display:flex;
-  flex-direction: column;
-  align-items:center;
-  justify-content: center;
-  font-size: ${titleSize};
-  border-radius: ${borderRadius}px;
-  `;
-
-const AccountHeader = styled.div`
-  background-color: ${colors.primary};
-  display: flex;
-  height: 8rem;
-  width: 100%;
-  padding: 0 5%;
-  align-items: center;
-  gap: ${gapSize}px;
-  border-bottom: 2px solid ${colors.primaryLight};
-  z-index: 1;
-`;
-
-const UserLogo = styled.div``;
 
 const UserDescription = styled.div`
   display: flex;
-  flex-direction:column;
-  align-items: start;
-  `;
-
-const UserInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${gapSize}px;
-  width: 100%;
-`;
-
-const LinksSection = styled.div`
-  display: flex;
-  gap: ${gapSize}px;
+  align-items: center;
+  gap: ${gapSizeSmall}px;
 `;
 
 const MainContent = styled.div`
-  margin:2rem 5%;
+  margin: 2rem 5% 5rem;
 `;
 
-const Footer = styled.div``;
+const UploadVideoModel = styled.div`
+  position: fixed;
+  justify-self: center;
+  width: 100%;
+  max-width: 100vw;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+`;
 
 const UploadButtonTitle = styled(Title)`
   @media (max-width: 600px) {
     display: none;
   }
+`;
+
+const UploadButton = styled.div`
+  position: fixed;
+  bottom: 1rem;
+  right: 5%;
 `;
 
 export const Layout = ({ children }: { children: ReactNode }) => {
@@ -179,61 +162,40 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             }}
           />
         </Search>
+        <UserDescription>
+          <Title style={{ fontSize: textSize }}>
+            {user.user_id}
+          </Title>
+          {user.user_id !== "murad_aleskerov" ? (
+            <SomeoneLogo height="2.5rem" />
+          ) : (
+            <MyLogo height="2.5rem" />
+          )}
+        </UserDescription>
       </StyleHeader>
-      <CurrentUsername>
-        <AccountHeader>
-          <UserLogo>
-            {user.user_id !== "murad_aleskerov" ? (
-              <SomeoneLogo height="5rem" />
-            ) : (
-              <MyLogo height="5rem" />
-            )}
-          </UserLogo>
-          <UserDescription>
-            <Title style={{ fontSize: titleSizeBig }}>
-              {user.user_id}
-            </Title>
-            {user.user_id !== "murad_aleskerov" ? (
-              <UserInfo>
-                <Text>
-                  Not a Full Stack Developer
-                </Text>
-                <ExternalLink href="https://www.linkedin.com">
-                  <LinkedIn height={`${sizeOfIcons}px`} />
-                </ExternalLink>
-                <ExternalLink href="https://github.com">
-                  <GitHub height={`${sizeOfIcons}px`} />
-                </ExternalLink>
-              </UserInfo>
-            ) : (
-              <UserInfo>
-                <Text>
-                  A Full Stack Developer
-                </Text>
-                <LinksSection>
-                  <ExternalLink href="https://www.linkedin.com/in/murad-aleskerov/">
-                    <LinkedIn height={`${sizeOfIcons}px`} />
-                  </ExternalLink>
-                  <ExternalLink href="https://github.com/MuradAles/ScopeLabs">
-                    <GitHub height={`${sizeOfIcons}px`} />
-                  </ExternalLink>
-                </LinksSection>
-              </UserInfo>
-            )}
-          </UserDescription>
-          <Button onClick={toggleUploadForm} style={{ marginLeft: "auto" }}>
-            <UploadVideoIcon fill={colors.transparent} width={`30px`} />
-            <UploadButtonTitle>Upload New Video</UploadButtonTitle>
-          </Button>
-          <UploadVideoModel ref={ref}>
-            {showUploadForm && <UploadVideoForm onClose={toggleUploadForm} />}
-          </UploadVideoModel>
-        </AccountHeader>
-      </CurrentUsername>
       <MainContent>
         {children}
       </MainContent>
-      <Footer />
+      <UploadVideoModel ref={ref}>
+        {showUploadForm && <UploadVideoForm onClose={toggleUploadForm} />}
+      </UploadVideoModel>
+      <UploadButton>
+        <Button onClick={toggleUploadForm} style={{ marginLeft: "auto" }}>
+          <UploadVideoIcon fill={colors.transparent} width={`30px`} />
+          <UploadButtonTitle>Upload New Video</UploadButtonTitle>
+        </Button>
+      </UploadButton>
     </>
   );
 };
+
+{/* <>
+  <LinksSection>
+    <ExternalLink href="https://www.linkedin.com/in/murad-aleskerov/">
+      <LinkedIn height={`${sizeOfIcons}px`} />
+    </ExternalLink>
+    <ExternalLink href="https://github.com/MuradAles/ScopeLabs">
+      <GitHub height={`${sizeOfIcons}px`} />
+    </ExternalLink>
+  </LinksSection>
+</> */}

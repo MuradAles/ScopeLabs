@@ -7,7 +7,7 @@ export const Button = styled.button`
   justify-content: center;
   align-items: center;
   gap: ${gapSize}px;
-  background-color: ${colors.orange};
+  background-color: ${colors.primaryLight};
   color: ${colors.white};
   border: none;
   border-radius: ${borderRadius}px;
@@ -20,6 +20,11 @@ export const Button = styled.button`
 
   &:active {
     background-color: ${colors.primaryLight};
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    pointer-events: none;
   }
 `;
 
