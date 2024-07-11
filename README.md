@@ -63,17 +63,17 @@ The project aims to develop a video management application using Vite and React 
 1. **HomePage**
     - User allowed to look at a list of videos and select a video from the list.
     
-![HomePage](https://github.com/MuradAles/ScopeLabs/assets/53098880/e138fbc0-2232-49e3-ab4a-592444beace2)
+![HomePage](https://github.com/user-attachments/assets/c26a11ec-2dad-48da-87d3-b1485a900514)
 
 2. **UploadVideo**
     - User allowed to create a new video object with a title, description, and video URL
     
-![UploadVideo](https://github.com/MuradAles/ScopeLabs/assets/53098880/8bbc8639-98d2-4f74-a3f3-605bb375710b)
+![UploadVideo](https://github.com/user-attachments/assets/af52a0fb-9a89-4d64-8ecf-453a5fb1a3da)
 
 3. **SearchUser**
     - User can search for videos based on user_id.
     
-![SearchUser](https://github.com/MuradAles/ScopeLabs/assets/53098880/759cfde6-5c59-4c7d-b799-6b6c05119816)
+![SearchUser](https://github.com/user-attachments/assets/735e9e3b-eae0-4021-a1d5-27d4ea640dcd)
 
 4. **SignleVideo**
     - This is a single video component
@@ -83,12 +83,20 @@ The project aims to develop a video management application using Vite and React 
 5. **EditVideo**
     - User allowed to edit the video
     
-![EditVideo](https://github.com/MuradAles/ScopeLabs/assets/53098880/e5dd3d11-32ff-4b3b-9558-55c20213653e)
+![EditVideo](https://github.com/user-attachments/assets/25ef4bc7-7cae-41fe-8590-c46ec5a315b5)
 
 5. **AddComment**
     - User allowed to edit the video
     
-![AddComment](https://github.com/MuradAles/ScopeLabs/assets/53098880/02caf8bd-6b81-4de4-afaa-675017a88720)
+![AddComment](https://github.com/user-attachments/assets/0cb01175-1dc0-4364-a156-a97730c920f0)
+
+6. **Phone HomePage**
+
+![PhoneHomePage](https://github.com/user-attachments/assets/6058d2e7-4be0-4957-918a-565b63ba9cd4)
+
+7. **Phone SingleVideo**
+
+![SignleVideo](https://github.com/user-attachments/assets/67e5460d-9f09-4956-a087-31b3068eb344)
 
 ## Getting Started
 
