@@ -39,14 +39,12 @@ const Comment = styled.div`
   flex-direction: column;
   margin-top: 8px;
   padding: 5px;
-  border: 1px solid ${colors.primaryBorder};
   border-radius: ${borderRadius}px;
 `;
 
 const CommentHeader = styled.div`
   display: flex;
   gap: ${gapSize}px;
-  border-bottom: 1px solid ${colors.primaryBorder};
 `;
 
 const CommentBubble = styled.div`

@@ -14,6 +14,7 @@ export const Title = styled.span`
   text-overflow: ellipsis;
   white-space: normal;
   word-break: break-word;
+
 `;
 
 export const Text = styled.span`

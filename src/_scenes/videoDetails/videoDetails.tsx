@@ -1,4 +1,4 @@
-import { Button, TextArea, Text, ErrorText, TextAreaDescription } from '@_components/index';
+import { Button, TextArea, Text, ErrorText } from '@_components/index';
 import { AppContextInterface, appContext } from '@_context/context';
 import { editVideo } from '@_services/videosService';
 import { formatDateDistance } from '@_utilities/index';
@@ -24,10 +24,10 @@ const VideoScreen = styled.div`
   right: 0;
   bottom: 0;
   display: flex;
-  height: 100vh;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+  z-index: 1;
+  height: 100vh;
 `;
 
 const VideoError = styled.div`
@@ -63,6 +63,7 @@ const VideoDetailsContent = styled.div`
   border: 1px solid ${colors.primaryBorder};
   border-radius: ${borderRadius}px;
   width: 90%;
+  max-width: 80rem;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -72,17 +73,19 @@ const VideoDetailsContent = styled.div`
   &::-webkit-scrollbar {
     display: none; 
   }
+  height: 45rem;
 `;
 
 const VideoPlayer = styled.div`
   position: relative;
-  min-height: 500px;
+  height: 35rem;
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 4/3;
   margin: 5px auto;
   z-index: 0;
+
   @media (max-width: 600px) {
-   min-height: 300px;
+   height: 15rem;
   }
 `;
 
@@ -113,6 +116,7 @@ const VideoDescription = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
+  margin-top: 10px;
   width: 100%;
   background-color: ${colors.primaryLight};
   border-radius: ${borderRadius}px;
@@ -223,15 +227,51 @@ const SpeedOption = styled.div`
   padding: 5px;
   cursor: pointer;
   color: ${colors.white};
+  background-color: ${colors.primary};
 
   &:hover {
-    background-color: ${colors.primary};
+    background-color: ${colors.primaryLight};
   }
 `;
 
 const ButtonSection = styled.div`
   display:flex;
   gap: ${gapSize}px;
+`;
+
+const VideoDetailsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: ${gapSize}px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+`;
+
+const VideoPlayerSection = styled.div`
+  flex: 1;
+  width: 65%;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+`;
+
+const CommentsSection = styled.div`
+  flex: 1;
+  width: 35%;
+  overflow-y: auto;
+  max-height: 41rem;
+
+  @media (max-width: 600px) {
+    flex: 2;
+    width: 100%;
+    overflow-y: none;
+    max-height: none;
+  }
 `;
 
 export const VideoDetails: React.FC = () => {
@@ -414,154 +454,158 @@ export const VideoDetails: React.FC = () => {
   return (
     <VideoScreen>
       <VideoDetailsContent>
-        <Button onClick={handleClose}
-          style={{
-            position: 'fixed',
-            zIndex: 1,
-            top: "6.1rem",
-            right: "5.3%",
-            width: "1.5rem",
-            height: "1.5rem",
-            padding: 0,
-          }}>
-          <ReturnIcon width={`${sizeOfIconsSmall}px`} height={`${sizeOfIconsSmall}px`} />
-        </Button>
-        {ReactPlayer.canPlay(singleVideo.video_url) ? (
-          <VideoPlayer ref={playerContainerRef}>
-            <ReactPlayer
-              ref={playerRef}
-              url={singleVideo.video_url}
-              playing={playing}
-              volume={volume}
-              playbackRate={playbackRate}
-              controls={false}
-              width="100%"
-              height="100%"
-              onProgress={(progress) => setCurrentTime(progress.playedSeconds)}
-              onDuration={(duration) => setDuration(duration)}
-              style={{ overflow: "hidden", borderRadius: `${borderRadius}px` }}
-            />
-            <Controls
-              $visible={controlsVisible}
-              onMouseLeave={() => setHovering(false)}
-              onMouseEnter={() => setHovering(true)}
-              onTouchStart={() => setHovering(true)}
-              onTouchEnd={() => setHovering(false)}
-            >
-              <SeekBarRow>
-                <SeekBar
-                  type="range"
-                  min={0}
-                  max={duration}
-                  step={0.1}
-                  value={currentTime}
-                  onChange={handleSeek}
-                  isHovered={isSeekBarHovered}
-                  onMouseEnter={handleSeekBarMouseEnter}
-                  onMouseLeave={handleSeekBarMouseLeave}
+        <VideoDetailsContainer>
+          <Button onClick={handleClose}
+            style={{
+              position: 'absolute',
+              zIndex: 1,
+              top: "0.25rem",
+              right: "0.25rem",
+              width: "1.5rem",
+              height: "1.5rem",
+              padding: 0,
+            }}>
+            <ReturnIcon width={`${sizeOfIconsSmall}px`} height={`${sizeOfIconsSmall}px`} />
+          </Button>
+          <VideoPlayerSection>
+            {ReactPlayer.canPlay(singleVideo.video_url) ? (
+              <VideoPlayer ref={playerContainerRef}>
+                <ReactPlayer
+                  ref={playerRef}
+                  url={singleVideo.video_url}
+                  playing={playing}
+                  volume={volume}
+                  playbackRate={playbackRate}
+                  controls={false}
+                  width="100%"
+                  height="100%"
+                  onProgress={(progress) => setCurrentTime(progress.playedSeconds)}
+                  onDuration={(duration) => setDuration(duration)}
+                  style={{ overflow: "hidden", borderRadius: `${borderRadius}px` }}
                 />
-              </SeekBarRow>
-              <ControlRow>
-                <LeftControls>
-                  <ControlButton onClick={handlePlayPause}>
-                    {playing ? <PauseIcon width={15} fill={colors.white} /> : <PlayIcon width={15} fill={colors.white} />}
-                  </ControlButton>
-                  {mute ? (
-                    <VolumeOff width={25} fill={colors.white} onClick={handleToggleMute} />
-                  ) : (
-                    <VolumeOn width={25} fill={colors.white} onClick={handleToggleMute} />
-                  )}
-                  <VolumeBar
-                    type="range"
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={volume}
-                    onChange={handleVolumeChange}
-                  />
-                  <Text style={{ color: colors.white, fontSize: "0.75rem" }}>{formatTime(currentTime)} / {formatTime(duration)}</Text>
-                </LeftControls>
-                <RightControls>
-                  <SpeedControl>
-                    <ControlButton onClick={() => setShowSpeedOptions(!showSpeedOptions)}>
-                      <SpeedIcon width={25} fill={colors.white} />
-                    </ControlButton>
-                    {showSpeedOptions && (
-                      <SpeedOptions>
-                        <SpeedOption onClick={() => handleSpeedOptionClick(0.5)}>0.5x</SpeedOption>
-                        <SpeedOption onClick={() => handleSpeedOptionClick(0.75)}>0.75x</SpeedOption>
-                        <SpeedOption onClick={() => handleSpeedOptionClick(1)}>1x</SpeedOption>
-                        <SpeedOption onClick={() => handleSpeedOptionClick(1.5)}>1.5x</SpeedOption>
-                        <SpeedOption onClick={() => handleSpeedOptionClick(2)}>2x</SpeedOption>
-                      </SpeedOptions>
-                    )}
-                  </SpeedControl>
-                  <ControlButton onClick={handleFullscreen}>
-                    <FullScreenIcon width={20} fill={colors.white} />
-                  </ControlButton>
-                </RightControls>
-              </ControlRow>
-            </Controls>
-          </VideoPlayer>
-        ) : (
-          <VideoError>
-            <VideoErrorImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
-            <VideoErrorText>Video URL is not playable</VideoErrorText>
-          </VideoError>
-        )}
-        <VideoDescription>
-          {editing ? (
-            <>
-              <TitleRow>
-                <TextArea
-                  id="input-video-title"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  style={{ marginBottom: "1px", fontWeight: 800, fontSize: "1.1rem" }}
-                />
-                <Text>{formatDateDistance(singleVideo.created_at)}</Text>
-              </TitleRow>
-              <DescriptionRow>
-                <TextAreaDescription
-                  id="input-video-description"
-                  value={newDescription}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  style={{ color: colors.white }}
-                />
-                <ButtonSection>
-                  <Button onClick={handleCancelEdit}>Cancel</Button>
-                  <Button onClick={handleSaveChanges}>Save</Button>
-                </ButtonSection>
-              </DescriptionRow>
-              {error && <ErrorText>{error}</ErrorText>}
-            </>
-          ) : (
-            <>
-              <TitleRow>
-                <TextArea
-                  id="input-video-title"
-                  readOnly
-                  value={singleVideo.title}
-                  style={{ marginBottom: "1px", fontWeight: 800, fontSize: "1.1rem", boxShadow: "none", resize: "none" }}
-                />
-                <Text>{formatDateDistance(singleVideo.created_at)}</Text>
-              </TitleRow>
-              <DescriptionRow>
-                <TextArea
-                  id="input-video-description"
-                  readOnly
-                  value={singleVideo.description}
-                  style={{ boxShadow: "none", resize: "none", color: colors.white }}
-                />
-                <Button onClick={handleEdit}>Edit</Button>
-              </DescriptionRow>
-            </>
-          )}
-        </VideoDescription>
-        <Text style={{ color: colors.white, width: "100%", margin: "10px 0" }}>
-          {singleVideo.num_comments} comments
-        </Text>
-        <VideoComments />
+                <Controls
+                  $visible={controlsVisible}
+                  onMouseLeave={() => setHovering(false)}
+                  onMouseEnter={() => setHovering(true)}
+                  onTouchStart={() => setHovering(true)}
+                  onTouchEnd={() => setHovering(false)}
+                >
+                  <SeekBarRow>
+                    <SeekBar
+                      type="range"
+                      min={0}
+                      max={duration}
+                      step={0.1}
+                      value={currentTime}
+                      onChange={handleSeek}
+                      isHovered={isSeekBarHovered}
+                      onMouseEnter={handleSeekBarMouseEnter}
+                      onMouseLeave={handleSeekBarMouseLeave}
+                    />
+                  </SeekBarRow>
+                  <ControlRow>
+                    <LeftControls>
+                      <ControlButton onClick={handlePlayPause}>
+                        {playing ? <PauseIcon width={15} fill={colors.white} /> : <PlayIcon width={15} fill={colors.white} />}
+                      </ControlButton>
+                      {mute ? (
+                        <VolumeOff width={25} fill={colors.white} onClick={handleToggleMute} />
+                      ) : (
+                        <VolumeOn width={25} fill={colors.white} onClick={handleToggleMute} />
+                      )}
+                      <VolumeBar
+                        type="range"
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value={volume}
+                        onChange={handleVolumeChange}
+                      />
+                      <Text style={{ color: colors.white, fontSize: "0.75rem" }}>{formatTime(currentTime)} / {formatTime(duration)}</Text>
+                    </LeftControls>
+                    <RightControls>
+                      <SpeedControl>
+                        <ControlButton onClick={() => setShowSpeedOptions(!showSpeedOptions)}>
+                          <SpeedIcon width={25} fill={colors.white} />
+                        </ControlButton>
+                        {showSpeedOptions && (
+                          <SpeedOptions>
+                            <SpeedOption onClick={() => handleSpeedOptionClick(0.5)}>0.5x</SpeedOption>
+                            <SpeedOption onClick={() => handleSpeedOptionClick(0.75)}>0.75x</SpeedOption>
+                            <SpeedOption onClick={() => handleSpeedOptionClick(1)}>1x</SpeedOption>
+                            <SpeedOption onClick={() => handleSpeedOptionClick(1.5)}>1.5x</SpeedOption>
+                            <SpeedOption onClick={() => handleSpeedOptionClick(2)}>2x</SpeedOption>
+                          </SpeedOptions>
+                        )}
+                      </SpeedControl>
+                      <ControlButton onClick={handleFullscreen}>
+                        <FullScreenIcon width={20} fill={colors.white} />
+                      </ControlButton>
+                    </RightControls>
+                  </ControlRow>
+                </Controls>
+              </VideoPlayer>
+            ) : (
+              <VideoError>
+                <VideoErrorImage src="/Thumbnail_Not_Found.png" alt="Thumbnail Not Found" />
+                <VideoErrorText>Video URL is not playable</VideoErrorText>
+              </VideoError>
+            )}
+            <VideoDescription>
+              {editing ? (
+                <>
+                  <TitleRow>
+                    <TextArea
+                      id="input-video-title"
+                      value={newTitle}
+                      onChange={(e) => setNewTitle(e.target.value)}
+                      style={{ marginBottom: "1px", fontWeight: 800, fontSize: "1.2rem" }}
+                    />
+                    <Text>{formatDateDistance(singleVideo.created_at)}</Text>
+                  </TitleRow>
+                  <DescriptionRow>
+                    <TextArea
+                      id="input-video-description"
+                      value={newDescription}
+                      onChange={(e) => setNewDescription(e.target.value)}
+                      style={{ color: colors.white }}
+                    />
+                    <ButtonSection>
+                      <Button onClick={handleCancelEdit}>Cancel</Button>
+                      <Button onClick={handleSaveChanges}>Save</Button>
+                    </ButtonSection>
+                  </DescriptionRow>
+                  {error && <ErrorText>{error}</ErrorText>}
+                </>
+              ) : (
+                <>
+                  <TitleRow>
+                    <TextArea
+                      id="input-video-title"
+                      value={singleVideo.title}
+                      style={{ marginBottom: "1px", fontWeight: 800, boxShadow: "none", resize: "none" }}
+                    />
+                    <Text>{formatDateDistance(singleVideo.created_at)}</Text>
+                  </TitleRow>
+                  <DescriptionRow>
+                    <TextArea
+                      id="input-video-description"
+                      value={singleVideo.description}
+                      style={{ boxShadow: "none", resize: "none", color: colors.white }}
+                    />
+                    <Button onClick={handleEdit}>Edit</Button>
+                  </DescriptionRow>
+                </>
+              )}
+            </VideoDescription>
+          </VideoPlayerSection>
+          <CommentsSection>
+            <Text style={{ color: colors.white, width: "100%", margin: "10px 0" }}>
+              {singleVideo.num_comments} comments
+            </Text>
+            <VideoComments />
+          </CommentsSection>
+        </VideoDetailsContainer>
       </VideoDetailsContent>
     </VideoScreen>
   );

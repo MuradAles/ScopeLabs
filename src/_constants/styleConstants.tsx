@@ -18,6 +18,8 @@ export const colors = {
   primaryLight: '#202939',
   primaryBorder: '#343F50',
   primaryWhite: '#CDD5DF',
+  primaryButton: '#303e57',
+
   white: '#ffffff',
   text: '#ffffff',
   textDark: '#acb4bd',

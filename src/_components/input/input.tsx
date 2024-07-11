@@ -6,7 +6,7 @@ const inputStyles = `
   color: ${colors.text};
   background-color: ${colors.transparent};
   font-size: ${textSize};
-  box-shadow: inset 0 -1px 0 0 ${colors.primaryBorder};
+  box-shadow: inset 0 -2px 0 -1px ${colors.primaryBorder};
   &:focus {
     outline: none;
   }

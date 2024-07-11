@@ -31,12 +31,12 @@ const UploadFormContainer = styled.div<{ show: boolean }>`
   justify-content: center;
   grid-template-columns: 2fr 1fr;
   gap: ${gapSize}px;
-  width: 80%;
+  max-width: 50rem;
   left: 50%;
-  transform: translate(-50%, 20vh);
+  transform: translate(-50%, 35vh);
   background-color: ${colors.primary};
   border: 1px solid ${colors.primaryBorder};
-  padding: 10px;
+  padding: 20px;
   border-radius: ${borderRadius}px;
   box-shadow: 0 0 10px ${colors.primary};
   z-index: 1000;
@@ -45,14 +45,6 @@ const UploadFormContainer = styled.div<{ show: boolean }>`
   @media (max-width: 600px) {
     width: 23.5rem;
   }
-`;
-
-const Header = styled.form`
-  display: flex;
-  font-size: ${titleSize};
-  font-weight: 550;
-  border-bottom: 1px solid ${colors.primaryBorder};
-  margin-bottom: 0.5rem;
 `;
 
 const VideoForm = styled.div``;
@@ -214,36 +206,33 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
           <ReturnIcon width={`${sizeOfIconsSmall}px`} height={`${sizeOfIconsSmall}px`} />
         </Button>
         <VideoForm>
-          <Header>Upload Video</Header>
           <Form onSubmit={handleSubmit}>
+            <TextArea
+              id="title"
+              placeholder="Title"
+              onChange={(e) => setTitle(e.target.value)}
+              style={{ width: '100%', boxShadow: "none" }}
+            />
             <TextAreaDescription
+              id="description"
+              placeholder="Description"
+              onChange={(e) => setDescription(e.target.value)}
+              style={{ width: '100%', padding: "5px", borderRadius: "5px" }}
+            />
+            <TextArea
               id="video_url"
               placeholder="Video URL"
               onChange={(e) => {
                 setVideoUrl(e.target.value);
                 setThumbnailUrl(undefined);
               }}
-              style={{ width: '100%', minHeight: '3rem', maxHeight: '5rem' }}
-            />
-            <TextArea
-              id="title"
-              placeholder="Enter video title"
-              onChange={(e) => setTitle(e.target.value)}
-              style={{ width: '100%', boxShadow: "none", fontSize: titleSize, opacity: thumbnailUrl ? 1 : 0.3 }}
-              disabled={!thumbnailUrl}
-            />
-            <TextAreaDescription
-              id="description"
-              placeholder="Description"
-              onChange={(e) => setDescription(e.target.value)}
-              style={{ width: '100%', opacity: thumbnailUrl ? 1 : 0.3 }}
-              disabled={!thumbnailUrl}
+              style={{ width: '100%', minHeight: '2rem', maxHeight: '5rem', boxShadow: "none" }}
             />
             {error && <ErrorText>{error}</ErrorText>}
           </Form>
         </VideoForm>
         <VideoInstruction>
-          <Title>Preview</Title>
+          <Title style={{ paddingLeft: "5%" }}>Preview</Title>
           {loadingThumbnail ? (
             <Text>Loading thumbnail...</Text>
           ) : (
@@ -259,7 +248,7 @@ export const UploadVideoForm: React.FC<UploadVideoFormProps> = ({ onClose }) => 
             {canUpload ? (
               <Button type="button" onClick={handleUpload}>Upload</Button>
             ) : (
-              <Button type="button" disabled>Upload</Button>
+              <Button type="button" disabled>Upload Video</Button>
             )}
           </ButtonSection>
         </VideoInstruction>
