@@ -269,7 +269,7 @@ const CommentsSection = styled.div`
   @media (max-width: 600px) {
     flex: 2;
     width: 100%;
-    overflow-y: none;
+    overflow: visible;
     max-height: none;
   }
 `;
@@ -559,7 +559,7 @@ export const VideoDetails: React.FC = () => {
                       id="input-video-title"
                       value={newTitle}
                       onChange={(e) => setNewTitle(e.target.value)}
-                      style={{ marginBottom: "1px", fontWeight: 800, fontSize: "1.2rem" }}
+                      style={{ marginBottom: "1px", fontWeight: 800, fontSize: "1.1rem" }}
                     />
                     <Text>{formatDateDistance(singleVideo.created_at)}</Text>
                   </TitleRow>
@@ -583,7 +583,7 @@ export const VideoDetails: React.FC = () => {
                     <TextArea
                       id="input-video-title"
                       value={singleVideo.title}
-                      style={{ marginBottom: "1px", fontWeight: 800, boxShadow: "none", resize: "none" }}
+                      style={{ marginBottom: "1px", fontWeight: 800, boxShadow: "none", resize: "none", fontSize: "1.1rem" }}
                     />
                     <Text>{formatDateDistance(singleVideo.created_at)}</Text>
                   </TitleRow>
