@@ -78,7 +78,7 @@ The project aims to develop a video management application using Vite and React 
 4. **SignleVideo**
     - This is a single video component
     
-![SignleVideo](https://github.com/MuradAles/ScopeLabs/assets/53098880/bfe8aab4-895c-4696-971a-4c59a7999e4a)
+![SignleVideo](https://github.com/user-attachments/assets/59c9b47c-28ef-4013-b693-628d68307a39)
 
 5. **EditVideo**
     - User allowed to edit the video
@@ -96,7 +96,7 @@ The project aims to develop a video management application using Vite and React 
 
 7. **Phone SingleVideo**
 
-![SignleVideo](https://github.com/user-attachments/assets/67e5460d-9f09-4956-a087-31b3068eb344)
+![PhoneSignleVideo](https://github.com/user-attachments/assets/c2174ac1-26ae-43e5-82c8-128ecd613e6c)
 
 ## Getting Started
 
